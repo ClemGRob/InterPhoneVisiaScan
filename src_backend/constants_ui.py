@@ -1,0 +1,32 @@
+# Constants for UI elements
+MAIN_WINDOW_QML = "src_frontend/app_window.qml"
+
+ADMIN_WINDOW_QT = r'src_backend\win_admin\Show_win_admin.py'
+
+# Constants for button events
+EVENT_RECOGNITION_IA = "Reconnaissance_IA"
+EVENT_NUMERIC_KEYPAD_0 = "0"
+EVENT_NUMERIC_KEYPAD_1 = "1"
+EVENT_NUMERIC_KEYPAD_2 = "2"
+EVENT_NUMERIC_KEYPAD_3 = "3"
+EVENT_NUMERIC_KEYPAD_4 = "4"
+EVENT_NUMERIC_KEYPAD_5 = "5"
+EVENT_NUMERIC_KEYPAD_6 = "6"
+EVENT_NUMERIC_KEYPAD_7 = "7"
+EVENT_NUMERIC_KEYPAD_8 = "8"
+EVENT_NUMERIC_KEYPAD_9 = "9"
+EVENT_NUMERIC_KEYPAD_ETOILE = "*"
+EVENT_NUMERIC_KEYPAD_DIEZ = "#"
+EVENT_NUMERIC_KEYPAD_VALIDATION = "V"
+EVENT_NUMERIC_KEYPAD_CLEAR = "C"
+EVENT_SEARCH_THE_PERSON_NEXT = ">>>"
+EVENT_SEARCH_THE_PERSON_PREVIOUS = "<<<"
+EVENT_CALL_THE_PERSON = "Call the person"
+EVENT_PREVIOUS_BUTTON_CLICKED = "Button clicked Previous"
+EVENT_NEXT_BUTTON_CLICKED = "Button clicked next"
+EVENT_OPEN_ADMIN = "Open_Admin"
+
+# Other constants
+INFO_BUTTON_NOT_MANAGED_FILE = "src_backend/Repport/Info_button_not_managed.txt"
+
+EXPECTED_SEQUENCE = ["1", "2", "3", "4", "*"]

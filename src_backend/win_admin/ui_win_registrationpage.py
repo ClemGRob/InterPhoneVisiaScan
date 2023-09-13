@@ -1,0 +1,103 @@
+from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QDesktopWidget, QPushButton, QMessageBox, QCheckBox)
+from ui_win_virtual_keyboard import VirtualKeyboard
+
+class RegistrationPage(QWidget):
+    def __init__(self, name_display_widget):
+        """
+        Initialize the RegistrationPage widget.
+
+        Args:
+            name_display_widget: A QWidget for displaying names.
+        """
+        super().__init__()
+        self.name_display_widget = name_display_widget
+        self.initUI()
+
+    def initUI(self):
+        """
+        Initialize the user interface components of the RegistrationPage.
+        """
+        self.setWindowTitle("Registration Page")
+        self.setGeometry(0, 0, 350, 150)
+        self.center()
+
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        self.name_input = QLineEdit(self)
+        self.name_input.setPlaceholderText("Enter Name")
+        self.last_name_input = QLineEdit(self)
+        self.last_name_input.setPlaceholderText("Enter Last Name")
+        self.apartment_number_input = QLineEdit(self)
+        self.apartment_number_input.setPlaceholderText("Enter Apartment Number")
+        self.house_admin_checkbox = QCheckBox("House administrator")  # Add the checkbox
+        register_button = QPushButton("Register")
+        register_button.clicked.connect(self.register)
+
+        layout.addWidget(self.name_input)
+        layout.addWidget(self.last_name_input)
+        layout.addWidget(self.apartment_number_input)
+        layout.addWidget(self.house_admin_checkbox)  # Add the checkbox
+        layout.addWidget(register_button)
+
+        # Add click event handlers to show the virtual keyboard when the field is clicked
+        self.name_input.mousePressEvent = self.show_virtual_keyboard_name
+        self.last_name_input.mousePressEvent = self.show_virtual_keyboard_last_name
+        self.apartment_number_input.mousePressEvent = self.show_virtual_keyboard_apartment
+
+    def register(self):
+        """
+        Register a person with the provided information.
+
+        Retrieves the name, last name, apartment number, and house administrator status
+        from the input fields, registers the person using FaceRecognition,
+        displays a success message, and updates the name list in the name_display_widget.
+        """
+        name = self.name_input.text()
+        last_name = self.last_name_input.text()
+        apartment_number = self.apartment_number_input.text()
+        is_house_admin = self.house_admin_checkbox.isChecked()  # Check if the checkbox is checked
+   #     self.face_recognition.register_faces(name, last_name, apartment_number, is_house_admin)
+        print((name, last_name, apartment_number, is_house_admin))
+        QMessageBox.information(self, "Registration Success", "Person successfully registered.")
+        self.close()
+        self.name_display_widget.update_name_list()
+
+    def center(self):
+        """
+        Center the widget on the screen.
+        """
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def show_virtual_keyboard_name(self, event):
+        """
+        Show the virtual keyboard for the name input field.
+
+        Args:
+            event: The mousePressEvent event.
+        """
+        virtual_keyboard = VirtualKeyboard(self.name_input)
+        virtual_keyboard.exec_()
+
+    def show_virtual_keyboard_last_name(self, event):
+        """
+        Show the virtual keyboard for the last name input field.
+
+        Args:
+            event: The mousePressEvent event.
+        """
+        virtual_keyboard = VirtualKeyboard(self.last_name_input)
+        virtual_keyboard.exec_()
+
+    def show_virtual_keyboard_apartment(self, event):
+        """
+        Show the virtual keyboard for the apartment number input field.
+
+        Args:
+            event: The mousePressEvent event.
+        """
+        virtual_keyboard = VirtualKeyboard(self.apartment_number_input)
+        virtual_keyboard.exec_()
