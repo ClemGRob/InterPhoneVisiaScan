@@ -30,3 +30,6 @@ EVENT_OPEN_ADMIN = "Open_Admin"
 INFO_BUTTON_NOT_MANAGED_FILE = "src_backend/Repport/Info_button_not_managed.txt"
 
 EXPECTED_SEQUENCE = ["1", "2", "3", "4", "*"]
+
+DICT_HABITANT={}
+LIST_HABITANT = []

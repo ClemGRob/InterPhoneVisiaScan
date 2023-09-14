@@ -22,11 +22,14 @@ import pyrebase_val.src as serveraction
 
 firebase = pyrebase.initialize_app(config.pirebaseConfig)
 db = firebase.database()
+storage = firebase.storage()
+DICT_HABITANT = serveraction.get_data(db,"users")["noms"]
+
 
 if __name__ == "__main__":
     logger = init_log()
-
-    
+    print(DICT_HABITANT)
+    LIST_HABITANT = [*DICT_HABITANT]    
     try:
         app = QGuiApplication(sys.argv)
         view = QQmlApplicationEngine()

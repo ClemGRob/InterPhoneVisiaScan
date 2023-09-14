@@ -1,6 +1,6 @@
 Je vais faire appel à la fonction en interne de ces fichiers pour le cas correspondant à la demande, lors-  d'un appuis sur l'interface pour l'interphone.
 Dans les fichiers, suivant :
-- mangager_call
+- mangager_call -> il manque les noms des utilisateurs
 - manager_reco_facial -> cédric
 - manager_search_next
 - manager_search_previous

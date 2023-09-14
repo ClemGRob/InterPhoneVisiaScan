@@ -6,13 +6,16 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
-
+import time
 def set_manager_search_call(db, storage, call_receiver):
     print("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
     tokken = serveraction.get_data(db,"token")
-
+    
+    if call_receiver not in [*tokken]:
+        return "none"
+    
     DEVICE_TOKEN = tokken[call_receiver]
 
     message_title = "demande d'entree"
@@ -41,10 +44,35 @@ def set_manager_search_call(db, storage, call_receiver):
     serveraction.upload(storage,img,call_receiver+img,user, "call",call_receiver)
 
 
+
     # TODO
     # ####################
     # delet picture
     # ####################
+
+
+
+
+
+
+
+    # TODO
+    # ####################
+    # verification acces porte
+    # ####################
+    door_open = False
+    for _ in range(20):
+        if serveraction.get_data(db,"door_open") is "True":
+            door_open = True
+            break
+        time.sleep(1)
+    if door_open is True:
+        # message porte ouverte
+        pass
+    else:
+        # message porte fermée
+        pass
+
 
 
 
