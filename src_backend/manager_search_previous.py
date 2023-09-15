@@ -1,6 +1,6 @@
 import logging
 
-def set_manager_search_previous(self):
+def set_manager_search_previous(self, db_backend, storage_backend, LIST_HABITANT_BACKEND):
     logging.info("Lancement du programme de recherche précédent")
     #if face_recognition.current_name_index == 0:
     #    pass
