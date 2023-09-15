@@ -16,10 +16,13 @@ from src_backend.ui_set_data_event import manager_data
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
 
-    def __init__(self,view):
+    def __init__(self,view,db_backend, LIST_HABITANT_BACKEND):
         super().__init__()
         self.view = view
         self.stored_values = []
+
+        logging.debug(f"Liste reçu depuis Firebase : {[LIST_HABITANT_BACKEND]}")  
+        logging.debug(db_backend)
 
     # Signal pour indiquer qu'un événement s'est produit
     eventOccurred = pyqtSignal(str)
@@ -32,10 +35,16 @@ class Backend(QObject):
         Args:
             eventData (str): Les données de l'événement.
         """
-        print(f"Événement reçu : {eventData}")
-        self.eventOccurred.emit(eventData)
-
-        manager_data(self, eventData)
+        try:
+            logging.debug(f"Événement reçu : {eventData}")
+            self.eventOccurred.emit(eventData)
+            manager_data(self, eventData)
+            
+        except Exception as e:
+            # Handle the exception here, you can log it or take other actions as needed
+            logging.error(f"An exception occurred: {str(e)}")
+            # You can also emit a signal to notify QML of the exception if necessary
+            self.eventOccurred.emit(f"An exception occurred: {str(e)}")
         
     @pyqtSlot(str, result=str)
     def receive_textonPYTHON(self, label_name):
@@ -51,7 +60,7 @@ class Backend(QObject):
         o = self.view.rootObjects()[0].findChild(QObject, label_name)
         if o is not None:
             text = o.property("text")
-            print(f"Texte reçu depuis QML : {text}")
+            logging.debug(f"Texte reçu depuis QML : {text}")
             return text
         return ""
 
@@ -67,4 +76,4 @@ class Backend(QObject):
         o = self.view.rootObjects()[0].findChild(QObject, label_name)
         if o is not None:
             o.setProperty("text", text)
-            print(f"Texte transmis vers QML : {text}")
+            logging.debug(f"Texte transmis vers QML : {text}")

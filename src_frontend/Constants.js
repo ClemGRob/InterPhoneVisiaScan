@@ -39,16 +39,16 @@ var colorvertfoncé  = "#009c6a";
 var colorgris       = "#c2c2c2";
 var colorblanc      = "#ffffff";
 
-var picturePath     = "Images";
+var picturePath     = "Images/";
 
-var picture_fisrt_lunch         = picturePath + "/image_Accueil.png";
-var picture_fondTotal           = picturePath + "/Fond_total.png";
-var picture_SousFond            = picturePath + "/SousFond.png";
-var picture_SousFond_V2         = picturePath + "/SousFond_v2.png";
-var picture_Ynov_Logo           = picturePath + "/Ynov_Logo.png";
-var picture_Comptour_P_Logo_DvG = picturePath + "/Comptour_P_Logo_DvG.png";
-var picture_Comptour_P_Logo_GvD = picturePath + "/Comptour_P_Logo_GvD.png";
-var picture_Logo_Maison         = picturePath + "/Logo_Maison.png";
-var picture_Temp_Right_Pressed  = picturePath + "/temp-right-pressed.png";
-var picture_Temp_Left_Pressed  = picturePath + "/temp-left-pressed.png";
+var picture_fisrt_lunch         = picturePath + "image_Accueil.png";
+var picture_fondTotal           = picturePath + "Fond_total.png";
+var picture_SousFond            = picturePath + "SousFond.png";
+var picture_SousFond_V2         = picturePath + "SousFond_V2.png";
+var picture_Ynov_Logo           = picturePath + "Ynov_Logo.png";
+var picture_Comptour_P_Logo_DvG = picturePath + "Comptour_P_Logo_DvG.png";
+var picture_Comptour_P_Logo_GvD = picturePath + "Comptour_P_Logo_GvD.png";
+var picture_Logo_Maison         = picturePath + "Logo_Maison.png";
+var picture_Temp_Right_Pressed  = picturePath + "temp-right-pressed.png";
+var picture_Temp_Left_Pressed   = picturePath + "temp-left-pressed.png";
 

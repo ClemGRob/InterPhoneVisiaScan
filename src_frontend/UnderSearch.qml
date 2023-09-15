@@ -70,7 +70,6 @@ Rectangle {
             } 
             onClicked:{
                 backend.handleButtonPress("Call the person")
-                inactivityTimer.restart()
                }
         }
 

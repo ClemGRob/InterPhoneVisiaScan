@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QFrame, QGridLayout, QPushButton)
 
 
@@ -8,6 +9,7 @@ def show_virtual_keyboard_id(self, event):
     Args:
         event: The mousePressEvent event.
     """
+    logging.debug("C - open clavier ID")
     virtual_keyboard = VirtualKeyboard(self.id_input)
     virtual_keyboard.exec_()
 
@@ -18,6 +20,7 @@ def show_virtual_keyboard_password(self, event):
     Args:
         event: The mousePressEvent event.
     """
+    logging.debug("C - open clavier PW")
     virtual_keyboard = VirtualKeyboard(self.password_input)
     virtual_keyboard.exec_()
 
@@ -30,6 +33,8 @@ class VirtualKeyboard(QDialog):
             target_input: The input field to which the virtual keyboard inputs characters.
         """
         super().__init__()
+        logging.debug("C - Init clavier")
+
         self.target_input = target_input
         self.setWindowTitle("Virtual Keyboard")
         self.layout = QVBoxLayout()
@@ -67,19 +72,25 @@ class VirtualKeyboard(QDialog):
         Depending on the clicked button, insert characters, delete characters, add a space,
         or accept the input.
         """
+        logging.debug("C - Init boutons")
         button = self.sender()
         text = button.text()
         if text == 'Backspace':
+            logging.debug("C - Appui clavier : 'Backspace' ")
             current_text = self.target_input.text()
             self.target_input.setText(current_text[:-1])
         elif text == 'Space':
+            logging.debug("C - Appui clavier : 'Space' ")
             current_text = self.target_input.text()
             self.target_input.setText(current_text + ' ')
         elif text == 'Enter':
+            logging.debug("C - Appui clavier : 'Enter' ")
             self.accept()
         else:
             current_text = self.target_input.text()
+            logging.debug("C - Appui clavier :")
             self.target_input.setText(current_text + text)
+            #logging.debug(current_text + text)
 
     def showEvent(self, event):
         """
@@ -88,6 +99,7 @@ class VirtualKeyboard(QDialog):
         Args:
             event: The showEvent event.
         """
+        logging.debug("C - Show clavier")
         self.keyboard_frame.show()
 
     def hideEvent(self, event):
@@ -97,4 +109,5 @@ class VirtualKeyboard(QDialog):
         Args:
             event: The hideEvent event.
         """
+        logging.debug("C - Hide clavier")
         self.keyboard_frame.hide()

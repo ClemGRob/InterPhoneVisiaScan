@@ -1,7 +1,7 @@
 # Constants for UI elements
 MAIN_WINDOW_QML = "src_frontend/app_window.qml"
 
-ADMIN_WINDOW_QT = r'src_backend\win_admin\Show_win_admin.py'
+ADMIN_WINDOW_QT = r'src_backend/win_admin/Show_win_admin.py'
 
 # Constants for button events
 EVENT_RECOGNITION_IA = "Reconnaissance_IA"

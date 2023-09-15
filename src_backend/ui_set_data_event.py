@@ -51,5 +51,5 @@ def manager_data(self, eventData):
         # Appeler la fonction associée à l'événement
         switch[eventData](self, eventData)
     else:
-        print("Not pass : " + eventData)
+        logging.debug("Not pass : " + eventData)
         write_messages_to_file(eventData, INFO_BUTTON_NOT_MANAGED_FILE)

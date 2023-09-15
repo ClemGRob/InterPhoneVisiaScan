@@ -1,0 +1,1 @@
+# Permet de fermer en admin la fenêtre QML
