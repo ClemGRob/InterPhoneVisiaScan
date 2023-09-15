@@ -4,8 +4,12 @@ import logging
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src_backend.constants_ui import *
+from src_backend.ui_nkeypad_get_number import set_saisie_text_qml
+from src_backend.ui_nkeypad_get_validate import get_Validation_number
+from src_backend.ui_nkeypad_get_clear import set_Clear_number
 
 def Manager_numeric_Keypad(self, eventData):
+    logging.info("In manager_numeric")
     if eventData in (   EVENT_NUMERIC_KEYPAD_0,
                         EVENT_NUMERIC_KEYPAD_1,
                         EVENT_NUMERIC_KEYPAD_2,
@@ -18,29 +22,13 @@ def Manager_numeric_Keypad(self, eventData):
                         EVENT_NUMERIC_KEYPAD_9,
                         EVENT_NUMERIC_KEYPAD_ETOILE,
                         EVENT_NUMERIC_KEYPAD_DIEZ):
-        self.stored_values.append(eventData)
-        # Envoye de la valeur "*" au "pyLbNum_Keypad"
-        num_stars = len(self.stored_values)
-        stars_text = "*" * num_stars
-        self.transmit_textonQML(stars_text, "pyLbNum_Keypad")
+        set_saisie_text_qml(self, eventData)
 
     elif eventData == EVENT_NUMERIC_KEYPAD_VALIDATION:
-        
-        if self.stored_values == EXPECTED_SEQUENCE:
-            logging.info("Séquence correcte")
-            self.transmit_textonQML("The door is open", "pyLbNum_Keypad")
-        
-            self.transmit_textonQML("Waiting code PIN", "pyLbNum_Keypad")
-
-        else:
-            logging.info("Séquence incorrecte")
-            self.transmit_textonQML("Waiting right code PIN", "pyLbNum_Keypad")
-        self.stored_values = []
+        get_Validation_number(self)
 
     elif eventData == EVENT_NUMERIC_KEYPAD_CLEAR:
-        logging.info("Effacement de la liste de valeurs")
-        self.transmit_textonQML("Waiting right code PIN", "pyLbNum_Keypad")
-        self.stored_values = []
+        set_Clear_number(self, eventData)
 
     else : 
          logging.debug("Enter else : Manager_numeric_Keypad :" + eventData)

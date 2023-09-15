@@ -10,6 +10,7 @@ def managerchangeswipeView(self, eventData):
         label_name = "pyLblnext"
         msg_name = "clicked Previous"
         text_to_send = f"{msg_name} "
+        logging.debug(text_to_send)
         self.transmit_textonQML(text_to_send, label_name)
 
     elif EVENT_NEXT_BUTTON_CLICKED in eventData:
@@ -17,6 +18,7 @@ def managerchangeswipeView(self, eventData):
         label_name = "pyLblnext"
         msg_name = "clicked Next"
         text_to_send = f"{msg_name} "
+        logging.debug(text_to_send)
         self.transmit_textonQML(text_to_send, label_name)
 
     else : 

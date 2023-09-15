@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QPushButton, QDesktopWidget, QMessageBox)
 from ui_win_optionpage import OptionsPage
 from ui_win_virtual_keyboard import VirtualKeyboard
@@ -11,8 +12,10 @@ class AdminPage(QWidget):
             name_display_widget: A QWidget for displaying names.
         """
         super().__init__()
+        logging.info("A - Init_UI")
         self.name_display_widget = name_display_widget
         self.initUI()
+        logging.info("A - End Init")
 
     def initUI(self):
         """
@@ -40,6 +43,8 @@ class AdminPage(QWidget):
         # Add click event handlers to show the virtual keyboard when the field is clicked.
         self.id_input.mousePressEvent = self.show_virtual_keyboard_id
         self.password_input.mousePressEvent = self.show_virtual_keyboard_password
+        
+
 
     def verify(self):
         """
@@ -48,13 +53,20 @@ class AdminPage(QWidget):
         If the verification is successful, open the OptionsPage.
         Otherwise, display an error message.
         """
+        logging.info("A - Start Verify")
+        
         entered_id = self.id_input.text()
         entered_password = self.password_input.text()
+        #logging.debug(entered_id)
+        #logging.debug(entered_password)
 
         if self.verify_id(entered_id, entered_password):
+            logging.debug("A - In OptionPage")
             self.open_options_page()
         else:
-            QMessageBox.critical(self, "Access Denied", "Incorrect ID or password.")
+            msg_acces = "A - Access Denied", "Incorrect ID or password."
+            logging.error(msg_acces)
+            QMessageBox.critical(self, msg_acces)
 
     def verify_id(self, entered_id_input, entered_pwd_input):
         """
@@ -76,29 +88,33 @@ class AdminPage(QWidget):
         correct_password = "1234"
         error_count = 0
 
+        logging.info("A - Verify_ID")
         while error_count < 3:
             if entered_id_input == correct_id and entered_pwd_input == correct_password:
                 return True
             error_count += 1
-            print("Invalid ID or password. Please try again.")
+            logging.debug("A - Invalid ID or password. Please try again.")
         # Allow 3 attempts for ID and password verification.
 
-        print("Too many failed attempts. Access denied.")
+        logging.debug("A - Too many failed attempts. Access denied.")
         return False
 
     def open_options_page(self):
         """
         Open the OptionsPage and close the AdminPage.
         """
+        logging.info("A - Open OptionPage")
         self.options_page = OptionsPage(self.name_display_widget)
         self.options_page.setWindowTitle("Options Page")
         self.options_page.show()
+        logging.info("A - Close OptionPage")
         self.close()
 
     def center(self):
         """
         Center the widget on the screen.
         """
+        logging.info("A - Place of the middle of the window")
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
@@ -111,6 +127,8 @@ class AdminPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "A - Activation du clavier pour l'ID"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.id_input)
         virtual_keyboard.exec_()
 
@@ -121,5 +139,7 @@ class AdminPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "A - Activation du clavier pour l'PW"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.password_input)
         virtual_keyboard.exec_()

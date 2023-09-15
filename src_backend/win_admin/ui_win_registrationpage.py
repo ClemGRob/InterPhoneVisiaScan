@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QDesktopWidget, QPushButton, QMessageBox, QCheckBox)
 from ui_win_virtual_keyboard import VirtualKeyboard
 
@@ -10,8 +11,10 @@ class RegistrationPage(QWidget):
             name_display_widget: A QWidget for displaying names.
         """
         super().__init__()
+        logging.info("R - Init_UI")
         self.name_display_widget = name_display_widget
         self.initUI()
+        logging.info("R - End Init")
 
     def initUI(self):
         """
@@ -53,20 +56,24 @@ class RegistrationPage(QWidget):
         from the input fields, registers the person using FaceRecognition,
         displays a success message, and updates the name list in the name_display_widget.
         """
+        logging.info("R - Saisie RegistrationPage")
         name = self.name_input.text()
         last_name = self.last_name_input.text()
         apartment_number = self.apartment_number_input.text()
         is_house_admin = self.house_admin_checkbox.isChecked()  # Check if the checkbox is checked
    #     self.face_recognition.register_faces(name, last_name, apartment_number, is_house_admin)
-        print((name, last_name, apartment_number, is_house_admin))
+        logging.debug((name, last_name, apartment_number, is_house_admin))
         QMessageBox.information(self, "Registration Success", "Person successfully registered.")
+        logging.info("R - Close Saisie RegistrationPage")
         self.close()
         self.name_display_widget.update_name_list()
+        logging.info("R - Fin de l'update de la liste")
 
     def center(self):
         """
         Center the widget on the screen.
         """
+        logging.info("R - Place of the middle of the window")
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
@@ -79,6 +86,8 @@ class RegistrationPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "R - Activation du clavier pour le name"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.name_input)
         virtual_keyboard.exec_()
 
@@ -89,6 +98,8 @@ class RegistrationPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "R - Activation du clavier pour last name"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.last_name_input)
         virtual_keyboard.exec_()
 
@@ -99,5 +110,7 @@ class RegistrationPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "R - Activation du clavier pour le number appartement"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.apartment_number_input)
         virtual_keyboard.exec_()

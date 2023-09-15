@@ -1,7 +1,12 @@
+import os
+import sys
+import logging
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+import pyrebase_val.src as serveraction
 
-
-def update_name_display(self):
-    print("Lancement du programme de raffraichissement")
+def update_name_display(db):
+    logging.info("Lancement du programme de raffraichissement")
+    DICT_HABITANT = serveraction.get_data(db,"users")["noms"]
     #registered_names = list(face_recognition.house_administrator_dict.keys())
 
     #if not registered_names:

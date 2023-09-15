@@ -43,10 +43,49 @@ Rectangle {
                     radius: myRoundButtonAppeladmin.radius = 5
                     color: "#007acc"
                 }
+                //onPressed: parent.color =  Constants.colorbleufoncé
+                //onReleased: parent.color = Constants.colorbleu
                 onClicked:{ 
                     backend.handleButtonPress("Open_Admin")
                 }
-            }
+            }/*
+            RoundButton {
+                id: myRoundButtonAppelclose
+                x: parent.width * 0.3
+                y: parent.height * 0.215
+                width: parent.width * 0.95
+                height: parent.height *0.1
+                
+                Image {
+                id: poweron
+                x: Constants.fullscreenWidth * 0.12
+                y: Constants.fullscreenHeight * 0.09
+                width: Constants.fullscreenWidth * 0.15
+                height: Constants.fullscreenHeight * 0.15
+                rotation: 270
+                source: "Images/power-on.png"
+                fillMode: Image.PreserveAspectFit
+
+                    Text {
+                        text: "Close windows"
+                        color: "#ffffff"
+                        font.pixelSize: 16
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        anchors.centerIn: parent
+                    }
+                    background: Rectangle {
+                        radius: myRoundButtonAppeladmin.radius = 5
+                        color: "#007acc"
+                    }
+                    onPressed: parent.color =  Constants.colorbleufoncé
+                    onReleased: parent.color = Constants.colorbleu
+                    onClicked:{ 
+                        backend.handleButtonPress("Close_window")
+
+                    }
+                }
+            }*/
         }
     }
 }   
