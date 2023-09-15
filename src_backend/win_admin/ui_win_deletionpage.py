@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QDesktopWidget, QPushButton, QMessageBox, QCheckBox)
 from ui_win_virtual_keyboard import VirtualKeyboard
 
@@ -10,8 +11,10 @@ class DeletionPage(QWidget):
             name_display_widget: A QWidget for displaying names.
         """
         super().__init__()
+        logging.info("D - Init_UI")
         self.name_display_widget = name_display_widget
         self.initUI()
+        logging.info("D - End Init")
 
     def initUI(self):
         """
@@ -53,22 +56,30 @@ class DeletionPage(QWidget):
         from the input fields, deletes the person using FaceRecognition,
         displays a success or failure message, and updates the name list in the name_display_widget.
         """
+        logging.info("D - Saisie RegistrationPage")
         name = self.name_input.text()
         last_name = self.last_name_input.text()
         apartment_number = self.apartment_number_input.text()
         is_house_admin = self.house_admin_checkbox.isChecked()  # Check if the checkbox is checked
         result = print(name, last_name, apartment_number, is_house_admin)
         if result:
-            QMessageBox.information(self, "Deletion Success", "Person successfully deleted.")
+            msg = "D - Deletion Success", "Person successfully deleted."
+            logging.info(msg)
+            QMessageBox.information(self, msg)
         else:
-            QMessageBox.critical(self, "Deletion Failed", "Person not found or deletion failed.")
+            msg = "D - Deletion Failed", "Person not found or deletion failed."
+            logging.error(msg)
+            QMessageBox.critical(self, msg)
+        logging.info("D - Close Saisie RegistrationPage")
         self.close()
         self.name_display_widget.update_name_list()
+        logging.info("D - Fin de l'update de la liste")
 
     def center(self):
         """
         Center the widget on the screen.
         """
+        logging.info("D - Place of the middle of the window")
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
@@ -81,6 +92,8 @@ class DeletionPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "D - Activation du clavier pour le name"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.name_input)
         virtual_keyboard.exec_()
 
@@ -91,6 +104,8 @@ class DeletionPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "D - Activation du clavier pour last name"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.last_name_input)
         virtual_keyboard.exec_()
 
@@ -101,5 +116,7 @@ class DeletionPage(QWidget):
         Args:
             event: The mousePressEvent event.
         """
+        msg = "D - Activation du clavier pour le number appartement"
+        logging.info(msg)
         virtual_keyboard = VirtualKeyboard(self.apartment_number_input)
         virtual_keyboard.exec_()

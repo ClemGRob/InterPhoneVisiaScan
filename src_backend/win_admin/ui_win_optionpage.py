@@ -1,3 +1,4 @@
+import logging
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QPushButton, QDesktopWidget)
 from ui_win_registrationpage import RegistrationPage
 from ui_win_deletionpage import DeletionPage
@@ -11,8 +12,10 @@ class OptionsPage(QWidget):
             name_display_widget: A QWidget for displaying names.
         """
         super().__init__()
+        logging.info("O - Init_UI")
         self.name_display_widget = name_display_widget
         self.initUI()
+        logging.info("O - End Init")
 
     def initUI(self):
         """
@@ -38,24 +41,29 @@ class OptionsPage(QWidget):
         """
         Open the RegistrationPage and close the OptionsPage.
         """
+        logging.info("O - Open RegistrationPage")
         self.registration_page = RegistrationPage(self.name_display_widget)
         self.registration_page.setWindowTitle("Registration Page")
         self.registration_page.show()
+        logging.info("O - Close RegistrationPage")
         self.close()
 
     def delete(self):
         """
         Open the DeletionPage and close the OptionsPage.
         """
+        logging.info("O - Open DeletionPage")
         self.deletion_page = DeletionPage(self.name_display_widget)
         self.deletion_page.setWindowTitle("Deletion Page")
         self.deletion_page.show()
+        logging.info("O - Close DeletionPage")
         self.close()
 
     def center(self):
         """
         Center the widget on the screen.
         """
+        logging.info("O - Place of the middle of the window")
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)

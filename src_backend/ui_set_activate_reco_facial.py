@@ -8,4 +8,5 @@ from src_backend.manager_reco_facial import set_manager_reco_facial
 
 def manager_reco_facial(self, eventData):
     logging.info("Lancement du programme de reconnaissance faciale")
-    set_manager_reco_facial()
+    logging.debug(eventData)
+    set_manager_reco_facial(self, eventData)
