@@ -16,12 +16,14 @@ from src_backend.ui_set_data_event import manager_data
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
 
-    def __init__(self,view,db_backend, LIST_HABITANT_BACKEND):
+    def __init__(self,view,db_backend, Habitant):
         super().__init__()
         self.view = view
         self.stored_values = []
+        self.Habitant = Habitant
+        self.Selected_Hab = 0
 
-        logging.debug(f"Liste reçu depuis Firebase : {[LIST_HABITANT_BACKEND]}")  
+        logging.debug(f"Liste reçu depuis Firebase : {[Habitant]}")
         logging.debug(db_backend)
 
     # Signal pour indiquer qu'un événement s'est produit
