@@ -20,7 +20,7 @@ def web_cam_photo(name:str):
     ret, frame = cap.read()
     cv2.imshow('frame',frame)
         #if cv2.waitKey(1) & 0xFF == ord('q'):
-    cv2.imwrite(name+str(id_photo)+".png", frame)
+    cv2.imwrite(name+".png", frame)
         
 
     cap.release()
@@ -66,7 +66,7 @@ def set_manager_search_call(self):
     user=serveraction.login(auth, "password@password.password","password")
 
     logging.debug("Upload")
-    serveraction.upload(self.storage,img,call_receiver+img,user, "call",call_receiver)
+    serveraction.upload(self.storage,self.Habitant[self.Selected_Hab]+".png",self.Habitant[self.Selected_Hab]+".png",user, "call",self.Habitant[self.Selected_Hab])
 
 
 
