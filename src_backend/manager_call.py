@@ -81,8 +81,7 @@ def set_manager_search_call(self):
 
     # TODO
     logging.info("Check access door")
-    data = {"door_open":"False"}
-    serveraction.set_data(self.db,data,"door")
+    
     # ####################
     # verification acces porte
     # ####################
@@ -111,8 +110,9 @@ def set_manager_search_call(self):
 
 
 
-    serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
-
+    # serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
+    data = {"door_open":"False"}
+    serveraction.set_data(self.db,data,"door")
 
 
 
