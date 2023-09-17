@@ -4,25 +4,20 @@ import pyrebase
 import sys
 import os
 from src_backend.manager_search_refresh_name import update_name_display
-from src_backend.ui_set_open_door import set_ui_msg_open_door
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
 import time
 
-Label_name_reco = "pyLbSerach_Hab"
+label_name = "pyLbSerach_Hab"
 
-def set_manager_search_call(self, db_backend, storage_backend, LIST_HABITANT_BACKEND):
+def set_manager_search_call(self, db, storage, call_receiver):
     logging.info("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
-    tokken = serveraction.get_data(db_backend,"token")
+    tokken = serveraction.get_data(db,"token")
     
-    text_retour = self.backend.receive_textonPYTHON(Label_name_reco)
-    logging.debug("Texte reçu sur Python:", text_retour)
-    call_receiver = text_retour
-
     if call_receiver not in [*tokken]:
         return "none"
     
@@ -86,7 +81,7 @@ def set_manager_search_call(self, db_backend, storage_backend, LIST_HABITANT_BAC
     if door_open is True:
         # message porte ouverte
         logging.debug("Door open")
-        set_ui_msg_open_door(self, Label_name_reco )
+        pass
     else:
         # message porte fermée
         for X in range(3) :
@@ -97,7 +92,7 @@ def set_manager_search_call(self, db_backend, storage_backend, LIST_HABITANT_BAC
                 logging.info("Door NOT open, {msg_relance}")
                 text_to_send = f" {msg_relance} "
                 self.transmit_textonQML(msg_relance)
-        
+        pass
 
 
 

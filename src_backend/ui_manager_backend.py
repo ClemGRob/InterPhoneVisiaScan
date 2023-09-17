@@ -16,12 +16,11 @@ from src_backend.ui_set_data_event import manager_data
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
 
-    def __init__(self,view,db_backend,storage_backend, LIST_HABITANT_BACKEND):
+    def __init__(self,view,db_backend, LIST_HABITANT_BACKEND):
         super().__init__()
         self.view = view
         self.stored_values = []
 
-        logging.debug(f"?? reçu depuis Firebase : {[storage_backend]}") 
         logging.debug(f"Liste reçu depuis Firebase : {[LIST_HABITANT_BACKEND]}")  
         logging.debug(db_backend)
 
@@ -29,7 +28,7 @@ class Backend(QObject):
     eventOccurred = pyqtSignal(str)
     
     @pyqtSlot(str)
-    def handleButtonPress(self, eventData, db_backend, storage_backend, LIST_HABITANT_BACKEND):
+    def handleButtonPress(self, eventData):
         """
         Méthode pour gérer l'événement transmis par les boutons dans QML.
 
@@ -39,7 +38,7 @@ class Backend(QObject):
         try:
             logging.debug(f"Événement reçu : {eventData}")
             self.eventOccurred.emit(eventData)
-            manager_data(self, eventData, db_backend, storage_backend, LIST_HABITANT_BACKEND)
+            manager_data(self, eventData)
             
         except Exception as e:
             # Handle the exception here, you can log it or take other actions as needed

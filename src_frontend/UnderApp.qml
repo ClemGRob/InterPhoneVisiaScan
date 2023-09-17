@@ -97,7 +97,7 @@ Image {
         }
 
         Rectangle {
-            id: lbcustomrecofacial
+            id: reconnaissancefaciale
             x: Constants.fullscreenWidth * 0.19
             y: Constants.fullscreenHeight * 0.45
             width: Constants.fullscreenWidth * 0.2

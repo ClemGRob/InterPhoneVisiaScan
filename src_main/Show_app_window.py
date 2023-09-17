@@ -13,7 +13,6 @@ from src_backend.constants_ui import *
 from src_backend.ui_manager_backend import Backend
 from src_backend.set_log import init_log
 from src_backend.set_error import call_exception
-print(sys.path)
 import pyrebase
 
 import pyrebase_val.config as config
@@ -27,15 +26,13 @@ DICT_HABITANT = serveraction.get_data(db,"users")["noms"]
 if __name__ == "__main__":
     try:
         logger = init_log()
-        logging.error(sys.path)
-
         LIST_HABITANT = [*DICT_HABITANT] 
         
         app = QGuiApplication(sys.argv)
         view = QQmlApplicationEngine()
 
         logging.info("Init Backend")
-        backend = Backend(view ,db,storage, LIST_HABITANT)
+        backend = Backend(view ,db, LIST_HABITANT)
         
         logging.info("Init Application")
         context = view.rootContext()

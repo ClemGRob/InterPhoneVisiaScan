@@ -9,17 +9,17 @@
 import logging
 from src_backend.ui_set_open_door import set_ui_msg_open_door
 
-Label_name_reco = "lbcustomrecofacial"
+label_name = "lbcustomrecofacial"
 
-def set_manager_reco_facial(self, eventData, db_backend, storage_backend, LIST_HABITANT_BACKEND ):
-    logging.info("Lancement du programme de {eventData}")
+def set_manager_reco_facial(self, eventData):
+    logging.info("Lancement du programme de {eventData}}")
     pass
     # if face_recognition.recognize_faces():
     #    logging.debug("personne reconnue")
-    # set_ui_msg_open_door(self, ICIlabeldeReco)
+    # set_ui_msg_open_door(self)
 
     # else:
     #    logging.debug("personne non connue")
     text_to_send = "Lunching"
-    self.transmit_textonQML(text_to_send, Label_name_reco)
+    self.transmit_textonQML(text_to_send, label_name)
     
