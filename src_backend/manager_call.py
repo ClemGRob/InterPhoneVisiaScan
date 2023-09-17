@@ -31,14 +31,13 @@ def set_manager_search_call(self):
     logging.info("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
-    tokken = serveraction.get_data(self.db,"tokken")
+    token = serveraction.get_data(self.db,"token")
 
-    if self.Habitant[self.Selected_Hab] not in [*tokken]:
-        print("out")
+    if self.Habitant[self.Selected_Hab] not in [*token]:
         return "unavailable"
     
     logging.debug(self.Habitant[self.Selected_Hab])
-    DEVICE_TOKEN = tokken[self.Habitant[self.Selected_Hab]]
+    DEVICE_TOKEN = token[self.Habitant[self.Selected_Hab]]
 
     message_title = "demande d'entree"
     message_body = "demande d'entree"
@@ -76,23 +75,24 @@ def set_manager_search_call(self):
     # delet picture
     # ####################
 
-
-
-
-
+    if os.path.exists(self.Habitant[self.Selected_Hab]+".png"):
+        os.remove(self.Habitant[self.Selected_Hab]+".png")
 
 
     # TODO
     logging.info("Check access door")
+    data = {"door_open":"False"}
+    serveraction.set_data(self.db,data,"door")
     # ####################
     # verification acces porte
     # ####################
     door_open = False
     for _ in range(20):
-        if serveraction.get_data(db,"door_open") == "True":
+        if serveraction.get_data(self.db,"door") =={ "door_open":"True"}:
             door_open = True
             break
         time.sleep(1)
+
     if door_open is True:
         # message porte ouverte
         logging.debug("Door open")
@@ -110,6 +110,8 @@ def set_manager_search_call(self):
         pass
 
 
+
+    serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
 
 
 
