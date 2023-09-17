@@ -1,4 +1,6 @@
+import cv2
 import logging
+
 from pyfcm import FCMNotification
 import pyrebase
 import sys
@@ -12,17 +14,31 @@ import time
 
 label_name = "pyLbSerach_Hab"
 
-def set_manager_search_call(self, db, storage, call_receiver):
+def web_cam_photo(name:str):
+    cap = cv2.VideoCapture(0)
+    id_photo=0
+    ret, frame = cap.read()
+    cv2.imshow('frame',frame)
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imwrite(name+str(id_photo)+".png", frame)
+        
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+def set_manager_search_call(self):
+    # self.Habitant[self.Selected_Hab]
     logging.info("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
-    tokken = serveraction.get_data(db,"token")
+    tokken = serveraction.get_data(self.db,"tokken")
+
+    if self.Habitant[self.Selected_Hab] not in [*tokken]:
+        print("out")
+        return "unavailable"
     
-    if call_receiver not in [*tokken]:
-        return "none"
-    
-    logging.debug(call_receiver)
-    DEVICE_TOKEN = tokken[call_receiver]
+    logging.debug(self.Habitant[self.Selected_Hab])
+    DEVICE_TOKEN = tokken[self.Habitant[self.Selected_Hab]]
 
     message_title = "demande d'entree"
     message_body = "demande d'entree"
@@ -38,8 +54,7 @@ def set_manager_search_call(self, db, storage, call_receiver):
     # ####################################
     # # Take picture
     # ####################################
-
-
+    web_cam_photo(self.Habitant[self.Selected_Hab])
 
 
     img = "img.txt"
@@ -51,7 +66,7 @@ def set_manager_search_call(self, db, storage, call_receiver):
     user=serveraction.login(auth, "password@password.password","password")
 
     logging.debug("Upload")
-    serveraction.upload(storage,img,call_receiver+img,user, "call",call_receiver)
+    serveraction.upload(self.storage,img,call_receiver+img,user, "call",call_receiver)
 
 
 
@@ -74,7 +89,7 @@ def set_manager_search_call(self, db, storage, call_receiver):
     # ####################
     door_open = False
     for _ in range(20):
-        if serveraction.get_data(db,"door_open") is "True":
+        if serveraction.get_data(db,"door_open") == "True":
             door_open = True
             break
         time.sleep(1)

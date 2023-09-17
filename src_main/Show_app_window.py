@@ -32,7 +32,7 @@ if __name__ == "__main__":
         view = QQmlApplicationEngine()
 
         logging.info("Init Backend")
-        backend = Backend(view ,db, LIST_HABITANT)
+        backend = Backend(view ,db,storage, LIST_HABITANT)
         
         logging.info("Init Application")
         context = view.rootContext()
