@@ -1,23 +1,28 @@
+import os
 import enum
 
 # Folder projet interphone
-FOLDER_VISIA_SCAN = "src_backend/Repport"
+LOG_DIR = "src_backend/Repport/"
 
 # Information des trace d'erreur
-ERROR_TRACE_FILE_PATH = FOLDER_VISIA_SCAN + 'Error.trace'
-ERROR_PREVIOUS_TRACE_FILE_PATH = FOLDER_VISIA_SCAN + 'Error.previous.trace'
+ERROR_TRACE_FILE_PATH = os.path.join(LOG_DIR, 'Error.trace')
 
-# Information des logs
-LOG_TEST_FILE_PATH = FOLDER_VISIA_SCAN +"/test_information.log"
-LOG_FILE_PATH = FOLDER_VISIA_SCAN + "/information.log"
+# Information des logs pour des log général
+LOG_FILENAME = "APP_Window.log"
+
+#Structure du code
+LOG_FORMAT = "%(asctime)s [%(levelname)s] - %(message)s"  # Format du journal
 MAX_BYTES = 1024*1024
-BACKUP_COUNT = 3
+LOG_MAX_FILES = 4  
 
 class LogLevel(enum.Enum):
-    INFO = "INFO"
-    DEBUG = "DEBUG"
-    ERROR = "ERROR"
+    INFO    = "INFO"
+    DEBUG   = "DEBUG"
+    ERROR   = "ERROR"
 
 # Niveau de journalisation par défaut
-DEFAULT_LOG_LEVEL = LogLevel.DEBUG  # Remplacez "DEBUG" par le niveau de votre choix
-DEFAULT_LOG_TEST_LEVEL = LogLevel.ERROR  
+    # Remplacez "DEBUG" par le niveau de votre choix
+DEFAULT_LOG_LEVEL = LogLevel.DEBUG  
+
+# Reset 
+MAX_AGE_DAYS = 2  # Définissez le nombre maximal de jours pour conserver les fichiers

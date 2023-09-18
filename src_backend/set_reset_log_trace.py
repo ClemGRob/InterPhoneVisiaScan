@@ -32,10 +32,8 @@ def reset_file(file_path):
     """
     Réinitialise le fichier en renommant l'ancien avec un horodatage et en créant un nouveau fichier vide.
     """
-    log_dir = "src_backend/Repport/old_trace/"
-    max_age_days = 2  # Définissez le nombre maximal de jours pour conserver les fichiers
 
-    remove_old_logs(log_dir, max_age_days)
+    remove_old_logs(FOLDER_REPPORT_PREVIOUS_VISIA_SCAN, MAX_AGE_DAYS)
 
     # Renommer l'ancien fichier avec un horodatage
     if os.path.exists(file_path):

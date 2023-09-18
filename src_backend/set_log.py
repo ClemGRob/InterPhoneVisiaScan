@@ -1,106 +1,53 @@
 import os
-import sys
 import logging
-
-from threading import Lock
 from logging.handlers import RotatingFileHandler
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from src_backend.set_reset_log_trace import init_reset_file
-from src_backend.constants_log import *
+from src_backend.constants_log import LOG_DIR, LOG_FILENAME, DEFAULT_LOG_LEVEL, LOG_FORMAT, LOG_MAX_FILES
 
 class LogManager:
     """
-    Classe pour la gestion des logs :
+    Initialisation du gestionnaire de logs et des traces d'erreur.
     """
-
-    def __init__(self):
+    def __init__(self, log_level=DEFAULT_LOG_LEVEL):
         """
-        Initialisation du gestionnaire de logs et des traces d'erreur.
+        Initialise un objet LogManager.
+
+        Args:
+            log_level (str): Niveau de journalisation (par défaut : "DEBUG").
         """
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(DEFAULT_LOG_LEVEL.value)
+        self.log_level = log_level
+        self.logger = None
 
-        init_reset_file(self)
+    def setup_logging(self):
+        """
+        Configure le système de journalisation.
+        
+        Returns:
+            logger: Instance du logger configuré.
+        """
+        # Vérifie si le répertoire de logs existe, sinon le crée
+        if not os.path.exists(LOG_DIR):
+            os.makedirs(LOG_DIR)
 
-        # Configuration du gestionnaire de fichiers de logs
-        log_file_path = LOG_FILE_PATH
-        max_bytes = MAX_BYTES
-        backup_count = BACKUP_COUNT
-        contents_formatter = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        # Configuration du logger
+        self.logger = logging.getLogger()
+        self.logger.setLevel(self.log_level)
 
-        handler = RotatingFileHandler(log_file_path, maxBytes=max_bytes, backupCount=backup_count)
-        formatter = logging.Formatter(contents_formatter)
-        handler.setFormatter(formatter)
-
+        # Configuration du gestionnaire de fichiers journaux rotatifs
+        log_file = os.path.join(LOG_DIR, LOG_FILENAME)
+        handler = RotatingFileHandler(log_file, maxBytes=1024*1024, backupCount=LOG_MAX_FILES-1)
+        handler.setFormatter(logging.Formatter(LOG_FORMAT))
         self.logger.addHandler(handler)
 
-        # Initialisation d'un verrou pour le fichier de log
-        self.log_lock = Lock()
-
-    def _acquire_lock(self):
-        """
-        Acquérir le verrou du fichier de log.
-        """
-        self.log_lock.acquire()
-
-    def _release_lock(self):
-        """
-        Libérer le verrou du fichier de log.
-        """
-        self.log_lock.release()
-
-    def info(self, message):
-        """
-        Enregistrer un message d'information dans les logs.
-
-        Args:
-            message (str): Le message à enregistrer.
-        """
-        self._acquire_lock()
-        try:
-            self.logger.info(message)
-        finally:
-            self._release_lock()
-
-
-    def error(self, message):
-        """
-        Enregistrer un message d'erreur dans les logs.
-
-        Args:
-            message (str): Le message d'erreur à enregistrer.
-        """
-        self._acquire_lock()
-        try:
-            self.logger.error(message)
-        finally:
-            self._release_lock()
-
-    def debug(self, message):
-        """
-        Enregistrer un message de débogage dans les logs.
-
-        Args:
-            message (str): Le message de débogage à enregistrer.
-        """
-        self._acquire_lock()
-        try:
-            self.logger.debug(message)
-        finally:
-            self._release_lock()
-
-def management_logging():
-    """
-    Initialiser le gestionnaire de logs.
-
-    Returns:
-        LogManager: Instance du gestionnaire de logs.
-    """
-    return LogManager()
+        return self.logger
 
 def init_log():
-    # Initialisation de la gestion des logs
-    logger = management_logging()
-    logger.info("Starting the application")
-    return logger
+    """
+    Initialise et configure le journal de l'application.
+
+    Returns:
+        logger: Instance du logger configuré.
+    """
+    log_manager = LogManager(log_level=DEFAULT_LOG_LEVEL.value)  # Vous pouvez spécifier le niveau de journalisation ici
+    log_manager.setup_logging()
+    logging.debug("Log init ok")
+    return log_manager.logger

@@ -1,7 +1,8 @@
 # Constants for UI elements
 MAIN_WINDOW_QML = "src_frontend/app_window.qml"
 
-ADMIN_WINDOW_QT = r'src_backend\win_admin\Show_win_admin.py'
+ADMIN_WINDOW_QT = r'src_backend/win_admin/Show_win_admin.py'
+TEST_WINDOW_QT = r'src_backend/src_test/Show_win_test.py'
 
 # Constants for button events
 EVENT_RECOGNITION_IA = "Reconnaissance_IA"
@@ -25,8 +26,14 @@ EVENT_CALL_THE_PERSON = "Call the person"
 EVENT_PREVIOUS_BUTTON_CLICKED = "Button clicked Previous"
 EVENT_NEXT_BUTTON_CLICKED = "Button clicked next"
 EVENT_OPEN_ADMIN = "Open_Admin"
+EVENT_OPEN_TEST = "Open_Test"
+EVENT_CLOSE_UI = "Close_UI"
+
 
 # Other constants
 INFO_BUTTON_NOT_MANAGED_FILE = "src_backend/Repport/Info_button_not_managed.txt"
 
 EXPECTED_SEQUENCE = ["1", "2", "3", "4", "*"]
+
+DICT_HABITANT={}
+LIST_HABITANT = []

@@ -4,14 +4,21 @@
 #from Open_Win_Admin import *
 
 #face_recognition = FaceRecognitionWithIndication.FaceRecognition()
-import logging
 
-def set_manager_reco_facial():
-    print("Lancement du programme de reconnaissance faciale")
-    pass
-    #if face_recognition.recognize_faces():
-    #    logging.info("Lancement du programme de reconnaissance faciale")
-    # ("personne connue")
-    #else:
-    #    logging.error("Lancement du programme de reconnaissance faciale")
-    # ("personne non connue")
+
+import logging
+from src_backend.ui_set_open_door import set_ui_msg_open_door
+
+label_name = "reconnaissancefaciale"
+
+def set_manager_reco_facial(self, eventData):
+    logging.info(f"Lancement du programme de {eventData}")
+    if eventData == "quelquechose/inconnu":
+        logging.debug("personne reconnue")
+        set_ui_msg_open_door(self,label_name)
+
+    else:
+       logging.debug("personne non connue")
+    text_to_send = "Lunching"
+    self.transmit_textonQML(text_to_send, label_name)
+    

@@ -8,6 +8,8 @@ from src_backend.constants_ui import *
 from src_backend.ui_set_search import manger_search_habitant
 from src_backend.ui_set_swipview import managerchangeswipeView
 from src_backend.ui_set_win_admin import managerActivateAdmin
+from src_backend.ui_set_win_test import managerActivateTest
+from src_backend.ui_set_show_close_ihm import managerCloseUI
 from src_backend.ui_set_activate_reco_facial import manager_reco_facial
 from src_backend.ui_set_numeric_Keypad import Manager_numeric_Keypad
 from src_backend.ui_set_write_not_managed import write_messages_to_file
@@ -40,6 +42,8 @@ def manager_data(self, eventData):
         EVENT_PREVIOUS_BUTTON_CLICKED:      managerchangeswipeView,
         EVENT_NEXT_BUTTON_CLICKED:          managerchangeswipeView,
         EVENT_OPEN_ADMIN:                   managerActivateAdmin,
+        EVENT_OPEN_TEST:                    managerActivateTest,
+        EVENT_CLOSE_UI:                     managerCloseUI,
         #"Select_interface Menu":
         #"Select_interface Display Numeric keypad":
         #"Select_interface Display Search Hab":
@@ -51,5 +55,5 @@ def manager_data(self, eventData):
         # Appeler la fonction associée à l'événement
         switch[eventData](self, eventData)
     else:
-        print("Not pass : " + eventData)
+        logging.debug("Not pass : " + eventData)
         write_messages_to_file(eventData, INFO_BUTTON_NOT_MANAGED_FILE)

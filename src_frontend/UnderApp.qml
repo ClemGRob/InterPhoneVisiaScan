@@ -29,38 +29,9 @@ Image {
             source: Constants.picture_Ynov_Logo
             fillMode: Image.PreserveAspectFit
         }
-
-// Au besoin de fermer l'UI, décommanté ce code
-/* 
+        
         Image {
-            id: comptour_P_Logo_GVD
-            x: Constants.fullscreenWidth * - 0.01
-            y: Constants.fullscreenHeight * - 0.03
-            width: Constants.fullscreenWidth * 0.4
-            height: Constants.fullscreenHeight * 0.37
-            rotation : Constants.rotation
-            source: "Images/Comptour_P_Logo_GvD.png"
-            rotation: 90
-            fillMode: Image.PreserveAspectFit
-            Image {
-                id: poweron
-                x: Constants.fullscreenWidth * 0.12
-                y: Constants.fullscreenHeight * 0.09
-                width: Constants.fullscreenWidth * 0.15
-                height: Constants.fullscreenHeight * 0.15
-                rotation: 270
-                source: "Images/power-on.png"
-                fillMode: Image.PreserveAspectFit
-                MouseArea {
-                                    anchors.fill: parent
-                                    onPressed: parent.color =  Constants.colorbleufoncé // Couleur plus foncée lors de l'appui
-                                    onReleased: parent.color = Constants.colorbleu // Retour à la couleur standard lors du relâchement
-                }
-            }
-        }
-*/
-        Image {
-            id: image1
+            id: pictureComptourPLogoGvD
             x: Constants.fullscreenWidth * - 0.01
             y: Constants.fullscreenHeight * - 0.03
             width: Constants.fullscreenWidth * 0.4
@@ -70,7 +41,7 @@ Image {
             fillMode: Image.PreserveAspectFit
             
             Image {
-                id: image2
+                id: pictureTempLeftPressed
                 x: Constants.fullscreenWidth * 0.12
                 y: Constants.fullscreenHeight * 0.09
                 width: Constants.fullscreenWidth * 0.15
@@ -88,7 +59,7 @@ Image {
         }
 
         Image {
-            id: image3
+            id: pictureComptourPLogoDvG
             x: Constants.fullscreenWidth * - 0.019
             y: Constants.fullscreenHeight * 0.65
             width: Constants.fullscreenWidth * 0.4
@@ -98,7 +69,7 @@ Image {
             fillMode: Image.PreserveAspectFit
 
             Image {
-                id: image4
+                id: pictureTempRightPressed
                 x: Constants.fullscreenWidth * 0.12
                 y: Constants.fullscreenHeight * 0.09
                 width: Constants.fullscreenWidth * 0.15
@@ -126,7 +97,7 @@ Image {
         }
 
         Rectangle {
-            id: rectangle2
+            id: reconnaissancefaciale
             x: Constants.fullscreenWidth * 0.19
             y: Constants.fullscreenHeight * 0.45
             width: Constants.fullscreenWidth * 0.2
@@ -147,7 +118,7 @@ Image {
             }
 
             Text {
-                id : lbcustom
+                id : lbcustomrecofacial
                 anchors.centerIn: parent
                 text: "Please start the recognition"
                 font.pixelSize: 15
