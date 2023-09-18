@@ -1,4 +1,4 @@
-import cv2
+#import cv2
 import logging
 
 from pyfcm import FCMNotification
@@ -11,19 +11,21 @@ import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
 import time
 
+from src_backend.ui_set_win_popup import Open_Win_popup_msg
+
 label_name = "pyLbSerach_Hab"
 
 def web_cam_photo(name:str):
-    cap = cv2.VideoCapture(0)
-    id_photo=0
-    ret, frame = cap.read()
-    cv2.imshow('frame',frame)
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
-    cv2.imwrite(name+".png", frame)
+ #   cap = cv2.VideoCapture(0)
+ #   id_photo=0
+ #   ret, frame = cap.read()
+ #   cv2.imshow('frame',frame)
+  #      #if cv2.waitKey(1) & 0xFF == ord('q'):
+  #  cv2.imwrite(name+".png", frame)
         
-
-    cap.release()
-    cv2.destroyAllWindows()
+    pass
+  #  cap.release()
+ #   cv2.destroyAllWindows()
 
 def set_manager_search_call(self):
     # self.Habitant[self.Selected_Hab]
@@ -32,11 +34,16 @@ def set_manager_search_call(self):
     
     token = serveraction.get_data(self.db,"token")
 
+    
+    # TODO
+    #msg = "test"
+    #Open_Win_popup_msg(msg)
+    # Dans le cas où l'habitant et non joignable, l'indiquer à l'individu et sortir de la fonctionnalité
     if self.Habitant[self.Selected_Hab] not in [*token]:
-        logging.debug("out")
-        # TODO
-        # Dans le cas où l'habitant et non joignable, l'indiquer à l'individu et sortir de la fonctionnalité
-        
+        msg =  f'Unavailable Habitant : {self.Habitant[self.Selected_Hab]}'
+        logging.debug(msg)
+        Open_Win_popup_msg(msg)
+
         return "unavailable"
     
     logging.debug(self.Habitant[self.Selected_Hab])
@@ -77,13 +84,15 @@ def set_manager_search_call(self):
     # ####################
     # delet picture
     # ####################
-
-    if os.path.exists(self.Habitant[self.Selected_Hab]+".png"):
-        os.remove(self.Habitant[self.Selected_Hab]+".png")
-
-
-
-
+    try:
+        if os.path.exists(self.Habitant[self.Selected_Hab]+".png"):
+            os.remove(self.Habitant[self.Selected_Hab]+".png")
+        else:
+            msg =  f'Picture not found : {self.Habitant[self.Selected_Hab]}'
+            logging.debug(msg)
+            return "unavailable"
+    except Exception as msg:
+        Open_Win_popup_msg(msg)
 
     # TODO
     logging.info("Check access door")

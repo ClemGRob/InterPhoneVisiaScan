@@ -2,24 +2,29 @@ import os
 import sys
 import logging
 
+from PyQt5.QtWidgets import QMainWindow, QTextEdit
+
+from PyQt5.QtWidgets import QApplication
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src_test.set_log_test import test_init_log
+from src_test.set_win_test import OptionsPage
+from src_test.set_run_test import TestUnitaire 
 
 def main():
     logging = test_init_log() 
     logging.info("Start App_test.")
+
+    app = QApplication(sys.argv)
     
-    # TODO : Ajoutez ici vos tests unitaires
-    result = run_unit_tests()
-
-    if result:
-        logging.info("All unit tests passed.")
-    else:
-        logging.error("Some unit tests failed.")
-
-    logging.debug("App_test succes lunch.")
-    sys.exit(0 if result else 1)
+    test_runner = TestUnitaire()
+    options_page = OptionsPage(test_runner)
+    options_page.show()
+    
+    result = options_page.run_unit_tests() 
+    logging.debug(f"App_test succes lunch : {result}")
+    #sys.exit(0 if result else 1)
+    sys.exit(app.exec())
 
 def run_unit_tests():
     """

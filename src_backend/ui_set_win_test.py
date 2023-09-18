@@ -6,12 +6,16 @@ import logging
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from src_backend.constants_ui import *
 
-
 def Open_Win_Test(self):
     # Exécutez le script avec l'environnement Python actuel
     logging.debug(f"Chemin complet : {TEST_WINDOW_QT}")
     try :   
-        process = subprocess.Popen(["python", TEST_WINDOW_QT])
+        text_to_send = "Ceci est le texte à transmettre à la fenêtre Test."
+        process = subprocess.Popen(["python", TEST_WINDOW_QT], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        process.stdin.write(text_to_send)
+        process.stdin.close()  
+
         process.wait()
         
         if process.poll() is not None:
