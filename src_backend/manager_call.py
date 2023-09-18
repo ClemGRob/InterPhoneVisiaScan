@@ -13,12 +13,17 @@ import time
 
 label_name = "pyLbSerach_Hab"
 
+
+def pi_web_cam_photo(name:str):
+    import subprocess
+
+    cmd = "raspistill -o "+name+".png -q 100"
+    subprocess.call(cmd, shell=True)
+
 def web_cam_photo(name:str):
     cap = cv2.VideoCapture(0)
-    id_photo=0
     ret, frame = cap.read()
     cv2.imshow('frame',frame)
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
     cv2.imwrite(name+".png", frame)
         
 
@@ -56,7 +61,7 @@ def set_manager_search_call(self):
     # ####################################
     # # Take picture
     # ####################################
-    web_cam_photo(self.Habitant[self.Selected_Hab])
+    pi_web_cam_photo(self.Habitant[self.Selected_Hab])
 
 
     img = "img.txt"
