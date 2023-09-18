@@ -1,4 +1,4 @@
-#import cv2
+import cv2
 import logging
 
 from pyfcm import FCMNotification
@@ -12,19 +12,18 @@ import pyrebase_val.src as serveraction
 import time
 
 label_name = "pyLbSerach_Hab"
-# TODO // Constantin à un problème d'installation CV2
+
 def web_cam_photo(name:str):
-    #cap = cv2.VideoCapture(0)
-    #id_photo=0
-    #ret, frame = cap.read()
-    #cv2.imshow('frame',frame)
-    #    #if cv2.waitKey(1) & 0xFF == ord('q'):
-    #cv2.imwrite(name+".png", frame)
+    cap = cv2.VideoCapture(0)
+    id_photo=0
+    ret, frame = cap.read()
+    cv2.imshow('frame',frame)
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imwrite(name+".png", frame)
         
 
-    #cap.release()
-    #cv2.destroyAllWindows()
-    pass
+    cap.release()
+    cv2.destroyAllWindows()
 
 def set_manager_search_call(self):
     # self.Habitant[self.Selected_Hab]
@@ -100,6 +99,7 @@ def set_manager_search_call(self):
             door_open = True
             break
         time.sleep(1)
+
     if door_open is True:
         # message porte ouverte
         logging.debug("Door open")
