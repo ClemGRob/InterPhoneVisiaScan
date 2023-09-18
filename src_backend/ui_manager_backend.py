@@ -9,19 +9,23 @@ from PyQt5.QtGui import *
 from PyQt5.QtQuick import *
 from PyQt5.QtQml import *
 
-
+from src_backend.set_error import call_exception
 from src_backend.ui_set_data_event import manager_data
 
 
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
 
-    def __init__(self,view,db_backend, LIST_HABITANT_BACKEND):
+    def __init__(self,view,db_backend, storage, Habitant):
         super().__init__()
         self.view = view
         self.stored_values = []
+        self.Habitant = Habitant
+        self.Selected_Hab = 0
+        self.db=db_backend
+        self.storage = storage
 
-        logging.debug(f"Liste reçu depuis Firebase : {[LIST_HABITANT_BACKEND]}")  
+        logging.debug(f"Liste reçu depuis Firebase : {Habitant}")  
         logging.debug(db_backend)
 
     # Signal pour indiquer qu'un événement s'est produit
@@ -42,7 +46,7 @@ class Backend(QObject):
             
         except Exception as e:
             # Handle the exception here, you can log it or take other actions as needed
-            logging.error(f"An exception occurred: {str(e)}")
+            call_exception(e)
             # You can also emit a signal to notify QML of the exception if necessary
             self.eventOccurred.emit(f"An exception occurred: {str(e)}")
         

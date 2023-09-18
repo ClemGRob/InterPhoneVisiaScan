@@ -1,5 +1,4 @@
 .venv
 *.pyc
 old_*
-src_test/Repport
 src_backend/Repport

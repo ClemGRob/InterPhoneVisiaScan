@@ -41,7 +41,7 @@ Rectangle {
             height: parent.height * 0.2
             color: Constants.colorblanc
             text: qsTr(Constants.texteprojet)
-            font.pixelSize: 50
+            font.pixelSize: 60
             horizontalAlignment: Text.AlignHCenter
             anchors.verticalCenterOffset: 7
             anchors.topMargin: 6
@@ -55,7 +55,7 @@ Rectangle {
             height: parent.height * 0.2
             color: Constants.colorblanc
             text: qsTr(Constants.texteprojet_gene)
-            font.pixelSize: 30
+            font.pixelSize: 45
             horizontalAlignment: Text.AlignHCenter
             anchors.leftMargin: 105
             anchors.rightMargin: 115

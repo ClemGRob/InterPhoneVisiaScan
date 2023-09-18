@@ -21,18 +21,22 @@ import pyrebase_val.src as serveraction
 firebase = pyrebase.initialize_app(config.pirebaseConfig)
 db = firebase.database()
 storage = firebase.storage()
-DICT_HABITANT = serveraction.get_data(db,"users")["noms"]
+try:
+    DICT_HABITANT = serveraction.get_data(db, "users")["noms"]
+except KeyError:
+    logging.error("The 'noms' key was not found in the data.")
 
 if __name__ == "__main__":
     try:
         logger = init_log()
+        logging.info(logger)
         LIST_HABITANT = [*DICT_HABITANT] 
         
         app = QGuiApplication(sys.argv)
         view = QQmlApplicationEngine()
 
         logging.info("Init Backend")
-        backend = Backend(view ,db, LIST_HABITANT)
+        backend = Backend(view ,db, storage, LIST_HABITANT)
         
         logging.info("Init Application")
         context = view.rootContext()
@@ -46,7 +50,7 @@ if __name__ == "__main__":
             sys.exit(-1)
 
     except Exception as e:
-        call_exception(e, logger)
+        call_exception(e)
 
     logging.info("System Application Preparation Complete")
     sys.exit(app.exec_())

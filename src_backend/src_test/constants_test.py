@@ -1,8 +1,7 @@
 import os
 import enum
 
-
-TEST_LOG_DIR = "src_test/Repport"  # Répertoire où les fichiers journaux seront stockés
+TEST_LOG_DIR = "src_backend/Repport"  # Répertoire où les fichiers journaux seront stockés
 TEST_LOG_FILENAME = "TEST_App_Window.log"  # Nom du fichier journal principal
 
 class LogLevel(enum.Enum):# Niveau de journalisation
