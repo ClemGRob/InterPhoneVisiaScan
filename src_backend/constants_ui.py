@@ -4,6 +4,7 @@ MAIN_WINDOW_QML = "src_frontend/app_window.qml"
 ADMIN_WINDOW_QT = r'src_backend/win_admin/Show_win_admin.py'
 TEST_WINDOW_QT = r'src_backend/src_test/Show_win_test.py'
 POPUP_MSG_WINDOW = r'src_backend/win_popup/Show_popup_text.py'
+POPUP_QUESTION_WINDOW = r'src_backend/win_popup/Show_popup_question.py'
 
 # Constants for button events
 EVENT_RECOGNITION_IA = "Reconnaissance_IA"

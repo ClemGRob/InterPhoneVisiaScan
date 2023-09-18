@@ -11,3 +11,4 @@ def manager_search_call(self):
     retour_msg = set_manager_search_call(self)
     if retour_msg == "unavailable":
         logging.debug(f"Retour d'appel : {retour_msg}")
+   

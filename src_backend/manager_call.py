@@ -11,9 +11,11 @@ import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
 import time
 
-from src_backend.ui_set_win_popup import Open_Win_popup_msg
+from src_backend.ui_set_win_popup import Open_Win_popup_msg, Open_Win_popup_question
 
 label_name = "pyLbSerach_Hab"
+
+
 
 def web_cam_photo(name:str):
  #   cap = cv2.VideoCapture(0)
@@ -27,14 +29,27 @@ def web_cam_photo(name:str):
   #  cap.release()
  #   cv2.destroyAllWindows()
 
-def set_manager_search_call(self):
+
+
+def init_popup(self):
+    msg_retour = Open_Win_popup_question()
+    logging.info(f"messag retour popup{msg_retour}")
+    if msg_retour != "oui":
+        return "unavailable"
+
+
+
+def init_call(self):
     # self.Habitant[self.Selected_Hab]
     logging.info("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
     token = serveraction.get_data(self.db,"token")
+    return token, firebase
 
-    
+
+
+def verif_habitant(self,token):
     # TODO
     #msg = "test"
     #Open_Win_popup_msg(msg)
@@ -43,9 +58,11 @@ def set_manager_search_call(self):
         msg =  f'Unavailable Habitant : {self.Habitant[self.Selected_Hab]}'
         logging.debug(msg)
         Open_Win_popup_msg(msg)
-
         return "unavailable"
-    
+
+
+
+def envoi_msg(self, token):
     logging.debug(self.Habitant[self.Selected_Hab])
     DEVICE_TOKEN = token[self.Habitant[self.Selected_Hab]]
 
@@ -58,6 +75,8 @@ def set_manager_search_call(self):
     serveraction.send_message(config.API_KEY, DEVICE_TOKEN,message_title,message_body,data_message)
 
 
+
+def take_picture(self,firebase):
     # TODO
     logging.info("Take capture")
     # ####################################
@@ -79,21 +98,28 @@ def set_manager_search_call(self):
 
 
 
+def delete_picture(self):
     # TODO
     logging.info("Delete picture")
     # ####################
     # delet picture
     # ####################
+    file_to_delete = self.Habitant[self.Selected_Hab]+".png"
+
     try:
-        if os.path.exists(self.Habitant[self.Selected_Hab]+".png"):
-            os.remove(self.Habitant[self.Selected_Hab]+".png")
+        if os.path.exists(file_to_delete):
+            os.remove(file_to_delete)
         else:
-            msg =  f'Picture not found : {self.Habitant[self.Selected_Hab]}'
+            msg =  f'Picture not found : {file_to_delete}'
             logging.debug(msg)
             return "unavailable"
     except Exception as msg:
+        logging.debug(f"manager_call ligne 95{msg}")
         Open_Win_popup_msg(msg)
 
+
+
+def verif_access_door(self):
     # TODO
     logging.info("Check access door")
     data = {"door_open":"False"}
@@ -127,10 +153,23 @@ def set_manager_search_call(self):
         pass
 
 
+def replacement(self):
     serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
 
-    # TODO Affichage du nom est de l'appartement
-    #msg_name_hab = 
-    #msg_number_app = 
-    #text_to_send = f" Contacte : \n   {msg_name_hab} \nNum appartement :\n   {msg_number_app} "
-    #self.transmit_textonQML(text_to_send, label_name)
+
+def sequency_call(self):
+    init_popup(self)
+    s_token, s_firebase = init_call(self)
+    verif_habitant(self, s_token)
+    envoi_msg(self, s_token)
+    take_picture(self, s_firebase)
+    delete_picture(self)
+    verif_access_door(self)
+    replacement(self)
+
+
+def set_manager_search_call(self):
+    try : 
+        sequency_call(self)
+    except Exception as e:
+        logging.error(f"Une erreur s'est produite : {str(e)}")
