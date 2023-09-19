@@ -13,7 +13,6 @@ from src_backend.ui_set_show_close_ihm import managerCloseUI
 from src_backend.ui_set_activate_reco_facial import manager_reco_facial
 from src_backend.ui_set_numeric_Keypad import Manager_numeric_Keypad
 from src_backend.ui_set_write_not_managed import write_messages_to_file
-
 from src_backend.ui_set_block_access_admin import managerBlockAccessAdmin
 from src_backend.ui_set_reboot_app import managerRebootApp
 

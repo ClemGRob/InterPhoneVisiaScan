@@ -1,51 +1,48 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QTextEdit, QGroupBox
 
-
-
 class OptionsPage(QWidget):
+    """
+    OptionsPage représente la fenêtre principale de l'interface graphique.
+    Elle permet de définir les boutons et les actions associées.
+    """
     def __init__(self, test_runner):
         super().__init__()
         self.test_runner = test_runner
         self.init_ui()
 
     def init_ui(self):
+        """
+        Initialise l'interface utilisateur en créant des widgets et en définissant des actions.
+        """
         self.setWindowTitle('Test unitaire')
         self.setGeometry(100, 100, 800, 600)
 
         layout = QVBoxLayout()
 
         # Boutons pour les fonctionnalités
-        self.run_button = QPushButton('Exécuter les tests')
+        self.run_button = QPushButton('Exécuter tous les tests')
         self.run_button.clicked.connect(self.run_unit_tests)
         layout.addWidget(self.run_button)
 
-        self.storage_button = QPushButton('Espace de stockage')
+        self.composant_physique_button = QPushButton('Test Matériels physique')
         # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.storage_button)
+        layout.addWidget(self.composant_physique_button)
 
-        self.capture_button = QPushButton('Capture de photo')
+        self.soft_Frontend_button = QPushButton('Test Soft Frontend')
         # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.capture_button)
+        layout.addWidget(self.soft_Frontend_button)
 
-        self.log_button = QPushButton('Affichage des logs')
+        self.soft_Backend_button = QPushButton('Test Soft Backend')
         # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.log_button)
+        layout.addWidget(self.soft_Backend_button)
 
-        self.frontend_button = QPushButton('Fonctionnement du frontend')
+        self.soft_button = QPushButton('Test Soft entier')
         # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.frontend_button)
+        layout.addWidget(self.soft_button)
 
-        self.backend_button = QPushButton('Fonctionnement du backend')
+        self.test_unitaire_button = QPushButton('Test des tests unitaires')
         # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.backend_button)
-
-        self.admins_button = QPushButton('Fonctionnement de la partie admins')
-        # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.admins_button)
-
-        self.tests_button = QPushButton('Fonctionnement de la partie tests')
-        # Connectez ce bouton à la fonction correspondante
-        layout.addWidget(self.tests_button)
+        layout.addWidget(self.test_unitaire_button)
 
         # Zone de rendu des résultats
         self.result_text = QTextEdit()
@@ -54,6 +51,9 @@ class OptionsPage(QWidget):
         self.setLayout(layout)
     
     def run_unit_tests(self):
+        """
+        Exécute les tests unitaires et affiche les résultats dans la zone de texte.
+        """
         result = self.test_runner.run_all_tests()
         if result:
             self.result_text.setText("Tous les tests unitaires ont réussi.")

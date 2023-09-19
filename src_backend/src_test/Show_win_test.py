@@ -26,24 +26,5 @@ def main():
     #sys.exit(0 if result else 1)
     sys.exit(app.exec())
 
-def run_unit_tests():
-    """
-    Exécutez ici vos tests unitaires et retournez True si tous les tests passent, sinon False.
-    """
-    # TODO : Implémentez vos tests unitaires ici
-
-    # Exemple de test unitaire simple
-    if test_function():
-        return True
-    else:
-        return False
-
-def test_function():
-    """
-    Exemple de fonction de test unitaire.
-    """
-    # TODO : Écrivez ici votre test unitaire
-    return True  # Remplacez par le résultat de votre test
-
 if __name__ == "__main__":
     main()
