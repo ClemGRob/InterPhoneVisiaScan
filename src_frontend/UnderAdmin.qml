@@ -52,7 +52,7 @@ Rectangle {
             RoundButton {
                 id: myRoundButtonAppelclose
                 x: parent.width * 0.015
-                y: parent.height * 0.145
+                y: parent.height * 0.135
                 width: parent.width * 0.95
                 height: parent.height *0.1
                 Text {
@@ -76,7 +76,7 @@ Rectangle {
             RoundButton {
                 id: myRoundButtonopenlog
                 x: parent.width * 0.015
-                y: parent.height * 0.30
+                y: parent.height * 0.255
                 width: parent.width * 0.95
                 height: parent.height *0.1
                 Text {
@@ -99,7 +99,7 @@ Rectangle {
             RoundButton {
                 id: myRoundButtonopenlogadmin
                 x: parent.width * 0.015
-                y: parent.height * 0.45
+                y: parent.height * 0.375
                 width: parent.width * 0.95
                 height: parent.height *0.1
                 Text {
@@ -137,7 +137,7 @@ Rectangle {
             RoundButton {
                 id: myRoundButtonAppeltest
                 x: parent.width * 0.015
-                y: parent.height * 0.60
+                y: parent.height * 0.495
                 width: parent.width * 0.95
                 height: parent.height *0.1
                 Text {
@@ -156,6 +156,56 @@ Rectangle {
                 //onReleased: parent.color = Constants.colorbleu
                 onClicked:{ 
                     backend.handleButtonPress("Open_Test")
+                }
+            }
+
+            RoundButton {
+                id: myRoundButtonRESTadmin
+                x: parent.width * 0.015
+                y: parent.height * 0.615
+                width: parent.width * 0.95
+                height: parent.height *0.1
+                Text {
+                    text: "close access admin"
+                    color: "#aa0000"
+                    font.pixelSize: 35
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+                background: Rectangle {
+                    radius: myRoundButtonRESTadmin.radius = 5
+                    color: "#007acc"
+                }
+                //onPressed: parent.color =  Constants.colorbleufoncé
+                //onReleased: parent.color = Constants.colorbleu
+                onClicked:{ 
+                    backend.handleButtonPress("Block_admin")
+                }
+            }
+
+            RoundButton {
+                id: myRoundButtonReboot
+                x: parent.width * 0.015
+                y: parent.height * 0.735
+                width: parent.width * 0.95
+                height: parent.height *0.1
+                Text {
+                    text: "Reboot application"
+                    color: "#0000aa"
+                    font.pixelSize: 35
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+                background: Rectangle {
+                    radius: myRoundButtonReboot.radius = 5
+                    color: "#007acc"
+                }
+                //onPressed: parent.color =  Constants.colorbleufoncé
+                //onReleased: parent.color = Constants.colorbleu
+                onClicked:{ 
+                    backend.handleButtonPress("Reboot_app")
                 }
             }
         }

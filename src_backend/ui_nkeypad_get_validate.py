@@ -12,7 +12,16 @@ def get_Validation_number (self):
     logging.info("Validation")
     if self.stored_values == EXPECTED_SEQUENCE:
         set_number_sequency(self)
+
+    elif self.stored_values == EXPECTED_SEQUENCE_ADMIN:
+        msg = "Code bon"
+        logging.debug(f"Admin visible avec {msg}")
+        self.transmit_textonQML(msg, "pyLcurrentLabelvisible")
        
     else:
-        logging.debug("Séquence incorrecte")
+        msg = "Séquence incorrecte"
+        logging.debug(msg)
+        self.transmit_textonQML(msg, "pyLcurrentLabelvisible")
         set_Clear_number(self, "")
+
+    

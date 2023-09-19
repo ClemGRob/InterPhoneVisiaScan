@@ -11,6 +11,7 @@ SwipeView {
     width: Math.min(limitewithshow,limitewithshow-1)
     height: Math.min(limiteheightshow,limiteheightshow-1)
     currentIndex: currentPage   
+    
     Item{
         visible: currentIndex === 0
         Rectangle {
@@ -58,6 +59,7 @@ SwipeView {
         Rectangle {
             width: swipeView.width
             height: swipeView.height
+            color: "transparent"
 
             MouseArea {
                 width: parent.width
@@ -71,20 +73,35 @@ SwipeView {
     }
 
     Item {
-        visible: currentIndex === 3
+        visible: currentIndex === 3 && lbcurrentLabelvisible.text === "Code bon"
         Rectangle {
-                width: swipeView.width
-                height: swipeView.height
-                visible: true
+            id :rectangleAdmin
+            width: swipeView.width
+            height: swipeView.height
 
-                MouseArea {
-                    width: parent.width
-                    height: parent.height
-                    onClicked: {
-                        backend.handleButtonPress("Select_interface Display Admin")
+            Label {
+                id: lbcurrentLabelvisible
+                objectName: 'pyLcurrentLabelvisible'
+                text: ""
+                visible: false
+                onTextChanged: {
+                    if (lbcurrentLabelvisible.text === "Code bon") {
+                        rectangleAdmin.visible = true
+                    } else {
+                        rectangleAdmin.visible = false
                     }
-                    UnderAdmin {}
                 }
             }
-        }   
-    }
+
+            visible: lbcurrentLabelvisible.text === "Code bon"
+            MouseArea {
+                width: parent.width
+                height: parent.height
+                onClicked: {
+                    backend.handleButtonPress("Select_interface Display Admin")
+                }
+            }
+            UnderAdmin {}
+        }
+    }  
+}

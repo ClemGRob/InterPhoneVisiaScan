@@ -5,6 +5,8 @@ ADMIN_WINDOW_QT = r'src_backend/win_admin/Show_win_admin.py'
 TEST_WINDOW_QT = r'src_backend/src_test/Show_win_test.py'
 POPUP_MSG_WINDOW = r'src_backend/win_popup/Show_popup_text.py'
 POPUP_QUESTION_WINDOW = r'src_backend/win_popup/Show_popup_question.py'
+RESTART_APP_WINDOW = r'src_backend/win_restart/set_restart_app.py'
+APP_WINDOW_MAIN = r'src_main/Show_app_window.py'
 
 # Constants for button events
 EVENT_RECOGNITION_IA = "Reconnaissance_IA"
@@ -30,12 +32,15 @@ EVENT_NEXT_BUTTON_CLICKED = "Button clicked next"
 EVENT_OPEN_ADMIN = "Open_Admin"
 EVENT_OPEN_TEST = "Open_Test"
 EVENT_CLOSE_UI = "Close_UI"
+EVENT_BLOCK_ACCESS_ADMIN = "Block_admin"
+EVENT_REBOOT_APP = "Reboot_app"
 
 
 # Other constants
 INFO_BUTTON_NOT_MANAGED_FILE = "src_backend/Repport/Info_button_not_managed.txt"
 
 EXPECTED_SEQUENCE = ["1", "2", "3", "4", "*"]
+EXPECTED_SEQUENCE_ADMIN = ["1", "2", "3", "4", "#"]
 
 DICT_HABITANT={}
 LIST_HABITANT = []
