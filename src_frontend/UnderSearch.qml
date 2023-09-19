@@ -222,7 +222,7 @@ Rectangle {
                         color: "#007acc"
                     } 
                     onClicked:{
-                        backend.handleButtonPress("InValidEnvoiPicture")
+                        backend.handleButtonPress("NoPicture")
                     }
                 }
             }

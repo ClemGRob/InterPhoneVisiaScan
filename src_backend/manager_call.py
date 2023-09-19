@@ -1,4 +1,4 @@
-#import cv2
+import cv2
 import logging
 
 from pyfcm import FCMNotification
@@ -21,19 +21,19 @@ label_name = "pyLbSerach_Hab"
 
 
 
+def pi_web_cam_photo(name:str):
+    import subprocess
+
+    cmd = "raspistill -o "+name+".png -q 100"
+    subprocess.call(cmd, shell=True)
+
 def web_cam_photo(name:str):
- #   cap = cv2.VideoCapture(0)
- #   id_photo=0
- #   ret, frame = cap.read()
- #   cv2.imshow('frame',frame)
-  #      #if cv2.waitKey(1) & 0xFF == ord('q'):
-  #  cv2.imwrite(name+".png", frame)
-        
-    pass
-  #  cap.release()
- #   cv2.destroyAllWindows()
-
-
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    cv2.imshow('frame',frame)
+    cv2.imwrite(name+".png", frame)
+    cap.release()
+    cv2.destroyAllWindows()
 
 def init_popup(self):
     msg_retour = Open_Win_popup_question()
@@ -44,7 +44,6 @@ def init_popup(self):
 
 
 def init_call(self):
-    # self.Habitant[self.Selected_Hab]
     logging.info("Lancement du programme d'appel")
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
@@ -54,10 +53,6 @@ def init_call(self):
 
 
 def verif_habitant(self,token):
-    # TODO
-    #msg = "test"
-    #Open_Win_popup_msg(msg)
-    # Dans le cas où l'habitant et non joignable, l'indiquer à l'individu et sortir de la fonctionnalité
     if self.Habitant[self.Selected_Hab] not in [*token]:
         msg =  f'Unavailable Habitant : {self.Habitant[self.Selected_Hab]}'
         logging.debug(msg)
@@ -87,32 +82,24 @@ def take_picture(self,firebase):
     # # Take picture
     # ####################################
     web_cam_photo(self.Habitant[self.Selected_Hab])
-
-
     img = "img.txt"
-
     logging.debug("Authentification")
     auth=firebase.auth()
-
     logging.debug("Login")
     user=serveraction.login(auth, "password@password.password","password")
-
     logging.debug("Upload")
     serveraction.upload(self.storage,self.Habitant[self.Selected_Hab]+".png",self.Habitant[self.Selected_Hab]+".png",user, "call",self.Habitant[self.Selected_Hab])
-
+    print("end fct")
 
 
 def delete_picture(self):
-    # TODO
     logging.info("Delete picture")
-    # ####################
-    # delet picture
-    # ####################
     file_to_delete = self.Habitant[self.Selected_Hab]+".png"
 
     try:
         if os.path.exists(file_to_delete):
             os.remove(file_to_delete)
+            print("file delet")
         else:
             msg =  f'Picture not found : {file_to_delete}'
             logging.debug(msg)
@@ -140,32 +127,20 @@ def verif_access_door(self):
         time.sleep(1)
 
     if door_open is True:
-        # message porte ouverte
         logging.debug("Door open")
+        time.sleep(5)
+        door_open = False
         pass
-    else:
-        # message porte fermée
-        # TODO
-        # for X in range(3) :
-        #    msg_relance = "Remainder : {X} Try "
-        #    logging.info("Door NOT open, {msg_relance}")
-        #    if X == 3:
-        #        msg_relance = "please try a others choice option"
-        #        logging.info("Door NOT open, {msg_relance}")
-        #        text_to_send = f" {msg_relance} "
-        #        self.transmit_textonQML(msg_relance)
-        pass
-
-
 def replacement(self):
     serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
 
 def sequency_call(self, eventData_search):
-    logging.error(eventData_search)
+    # logging.error(eventData_search)
     s_token, s_firebase = init_call(self)
+    print(eventData_search)
     if EVENT_CALL_THE_PERSON in eventData_search:
+        print("EVENT_CALL_THE_PERSON")
         logging.info("IN EVENT_CALL_THE_PERSON")
-        #init_popup(self)
         verif_habitant(self, s_token)
         envoi_msg(self, s_token)
         label_name = "pyLbQuestion"
@@ -174,13 +149,19 @@ def sequency_call(self, eventData_search):
         self.transmit_textonQML(text_to_send, label_name)
 
     elif EVENT_VALIDE_PICTURE in eventData_search:
+        print("EVENT_VALIDE_PICTURE")
         logging.info("IN EVENT_VALIDE_PICTURE")
         take_picture(self, s_firebase)
         delete_picture(self)
+        envoi_msg(self, s_token)
         verif_access_door(self)
-        replacement(self)
+        label_name = "pyLbQuestion"
+        text_to_send = "MAquestionRESET"
+        self.transmit_textonQML(text_to_send, label_name)
+        # replacement(self)
 
     elif EVENT_INVALIDE_PICTURE in eventData_search:
+        print("EVENT_INVALIDE_PICTURE")
         logging.info("IN EVENT_INVALIDE_PICTURE")
         label_name = "pyLbQuestion"
         text_to_send = "MAquestionRESET"
@@ -193,6 +174,7 @@ def sequency_call(self, eventData_search):
         text_to_send = "MAquestionRESET"
         logging.debug(f"Transmition de la question : {text_to_send, label_name}")
         self.transmit_textonQML(text_to_send, label_name)
+    print("exit sequency call")
 
 
 def set_manager_search_call(self, eventData_search):

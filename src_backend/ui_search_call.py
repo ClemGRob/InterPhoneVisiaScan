@@ -8,6 +8,7 @@ from src_backend.manager_call import set_manager_search_call
 
 def manager_search_call(self,eventData_search):
     logging.info("Lancement du programme d'appel à l'habitant")
+    print("event : "+str(eventData_search))
     retour_msg = set_manager_search_call(self, eventData_search)
     if retour_msg == "unavailable":
         logging.debug(f"Retour d'appel : {retour_msg}")
