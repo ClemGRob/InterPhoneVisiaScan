@@ -49,6 +49,81 @@ Rectangle {
             }
         }
 
+        RoundButton {
+            visible: lbSerach_Hab.text !== "Wait for your choice"
+            id: myRoundButtonAppel
+            x: parent.width * 0.35
+            y: parent.height * 0.55
+            width: parent.width * 0.3
+            height: parent.height * 0.3
+            Text {
+                text: "Call the person"
+                color: "#ffffff"
+                font.pixelSize: 35
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.centerIn: parent
+            }
+            background: Rectangle {
+                radius: myRoundButtonAppel.radius = 5
+                color: "#007acc"
+            } 
+            onClicked:{
+                myRoundButtonprecedent.visible = false
+                myRoundButtonsuivant.visible = false
+                myRoundButtonAppel.visible = false
+                rectanglequestion.visible = true
+
+                backend.handleButtonPress("Call the person")
+               }
+        }
+
+        RoundButton {
+            id: myRoundButtonprecedent
+            x: parent.width * 0.02
+            y: parent.height * 0.45
+            width: parent.width * 0.3
+            height: parent.height * 0.52
+            Text {
+                text: "<<<"
+                color: "#ffffff"
+                font.pixelSize: 55
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.centerIn: parent
+            }
+            background: Rectangle {
+                radius: myRoundButtonprecedent.radius = 5
+                color: "#007acc"
+            } 
+            onClicked: {
+                backend.handleButtonPress("<<<")
+            }
+        }
+
+        RoundButton {
+            id: myRoundButtonsuivant
+            x: parent.width * 0.68
+            y: parent.height * 0.45
+            width: parent.width * 0.3
+            height: parent.height * 0.52
+            Text {
+                text: ">>>"
+                color: "#ffffff"
+                font.pixelSize: 55
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.centerIn: parent
+            }
+            background: Rectangle {
+                radius: myRoundButtonsuivant.radius = 5
+                color: "#007acc"
+            } 
+            onClicked:{
+                backend.handleButtonPress(">>>")
+            }
+        }
+
         Rectangle {
             visible: false
             id: rectanglequestion
@@ -59,6 +134,7 @@ Rectangle {
             color: "#007acc"
             radius: 5
             Rectangle {
+                visible: lbQuestion.text === "MAquestion"
                 id: rectanglequestionsur
                 x: parent.width * 0.015
                 y: parent.height * 0.04
@@ -71,7 +147,26 @@ Rectangle {
                     y: parent.width * 0.05
                     Label {
                         id: lbQuestion
+                        visible: false
                         objectName: 'pyLbQuestion'
+                        text: ""
+                        onTextChanged: {
+                            if (text === "MAquestion") {
+                                lbQuestionAffiche.test = "Voulez-vous autoriser la prise d'image ?";
+                            }
+
+                            if (text === "MAquestionRESET") {
+                                myRoundButtonprecedent.visible = true;
+                                myRoundButtonsuivant.visible = true;
+                                myRoundButtonAppel.visible = true;
+                                rectanglequestion.visible = false;
+                            }
+                        }
+                    }
+
+                    Label {
+                        id: lbQuestionAffiche
+                        objectName: 'pyLbAffichage'
                         width: parent.width
                         height: parent.height
                         color: "#ffffff"
@@ -132,82 +227,5 @@ Rectangle {
                 }
             }
         }
-
-        RoundButton {
-            visible: lbSerach_Hab.text !== "Wait for your choice"
-            id: myRoundButtonAppel
-            x: parent.width * 0.35
-            y: parent.height * 0.55
-            width: parent.width * 0.3
-            height: parent.height * 0.3
-            Text {
-                text: "Call the person"
-                color: "#ffffff"
-                font.pixelSize: 35
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                anchors.centerIn: parent
-            }
-            background: Rectangle {
-                radius: myRoundButtonAppel.radius = 5
-                color: "#007acc"
-            } 
-            onClicked:{
-                myRoundButtonprecedent.visible = false
-                myRoundButtonsuivant.visible = false
-                myRoundButtonAppel.visible = false
-                rectanglequestion.visible = true
-
-                //backend.handleButtonPress("Call the person")
-               }
-        }
-
-        RoundButton {
-            id: myRoundButtonprecedent
-            x: parent.width * 0.02
-            y: parent.height * 0.45
-            width: parent.width * 0.3
-            height: parent.height * 0.52
-            Text {
-                text: "<<<"
-                color: "#ffffff"
-                font.pixelSize: 55
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                anchors.centerIn: parent
-            }
-            background: Rectangle {
-                radius: myRoundButtonprecedent.radius = 5
-                color: "#007acc"
-            } 
-            onClicked: {
-                backend.handleButtonPress("<<<")
-            }
-        }
-
-        RoundButton {
-            id: myRoundButtonsuivant
-            x: parent.width * 0.68
-            y: parent.height * 0.45
-            width: parent.width * 0.3
-            height: parent.height * 0.52
-            Text {
-                text: ">>>"
-                color: "#ffffff"
-                font.pixelSize: 55
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                anchors.centerIn: parent
-            }
-            background: Rectangle {
-                radius: myRoundButtonsuivant.radius = 5
-                color: "#007acc"
-            } 
-            onClicked:{
-                backend.handleButtonPress(">>>")
-            }
-        }
-
-        
     }
 }   

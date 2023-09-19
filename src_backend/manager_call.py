@@ -3,8 +3,12 @@ import logging
 
 from pyfcm import FCMNotification
 import pyrebase
-import sys
 import os
+import sys
+import logging
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src_backend.constants_ui import *
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import pyrebase_val.config as config
@@ -156,20 +160,43 @@ def verif_access_door(self):
 def replacement(self):
     serveraction.remove(self.storage,self.Habitant[self.Selected_Hab]+".png", "call",self.Habitant[self.Selected_Hab])
 
-
-def sequency_call(self):
-    init_popup(self)
+def sequency_call(self, eventData_search):
+    logging.error(eventData_search)
     s_token, s_firebase = init_call(self)
-    verif_habitant(self, s_token)
-    envoi_msg(self, s_token)
-    take_picture(self, s_firebase)
-    delete_picture(self)
-    verif_access_door(self)
-    replacement(self)
+    if EVENT_CALL_THE_PERSON in eventData_search:
+        logging.info("IN EVENT_CALL_THE_PERSON")
+        #init_popup(self)
+        verif_habitant(self, s_token)
+        envoi_msg(self, s_token)
+        label_name = "pyLbQuestion"
+        text_to_send = "MAquestion"
+        logging.debug(f"Transmition de la question : {text_to_send, label_name}")
+        self.transmit_textonQML(text_to_send, label_name)
+
+    elif EVENT_VALIDE_PICTURE in eventData_search:
+        logging.info("IN EVENT_VALIDE_PICTURE")
+        take_picture(self, s_firebase)
+        delete_picture(self)
+        verif_access_door(self)
+        replacement(self)
+
+    elif EVENT_INVALIDE_PICTURE in eventData_search:
+        logging.info("IN EVENT_INVALIDE_PICTURE")
+        label_name = "pyLbQuestion"
+        text_to_send = "MAquestionRESET"
+        logging.debug(f"Transmition de la question : {text_to_send, label_name}")
+        self.transmit_textonQML(text_to_send, label_name)
+
+    else :
+        logging.info("not in sequency_call")
+        label_name = "pyLbQuestion"
+        text_to_send = "MAquestionRESET"
+        logging.debug(f"Transmition de la question : {text_to_send, label_name}")
+        self.transmit_textonQML(text_to_send, label_name)
 
 
-def set_manager_search_call(self):
+def set_manager_search_call(self, eventData_search):
     try : 
-        sequency_call(self)
+        sequency_call(self, eventData_search)
     except Exception as e:
         logging.error(f"Une erreur s'est produite : {str(e)}")

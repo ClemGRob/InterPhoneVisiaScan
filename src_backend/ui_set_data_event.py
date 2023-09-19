@@ -39,6 +39,9 @@ def manager_data(self, eventData):
         EVENT_NUMERIC_KEYPAD_VALIDATION:    Manager_numeric_Keypad,
         EVENT_NUMERIC_KEYPAD_CLEAR:         Manager_numeric_Keypad,
         EVENT_CALL_THE_PERSON:              manger_search_habitant,
+        EVENT_VALIDE_PICTURE:               manger_search_habitant,
+        EVENT_INVALIDE_PICTURE:             manger_search_habitant,
+
         EVENT_SEARCH_THE_PERSON_PREVIOUS:   manger_search_habitant,
         EVENT_SEARCH_THE_PERSON_NEXT:       manger_search_habitant,
         EVENT_PREVIOUS_BUTTON_CLICKED:      managerchangeswipeView,

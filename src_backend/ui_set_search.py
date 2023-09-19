@@ -19,9 +19,9 @@ def manger_search_habitant(self, eventData):
         logging.debug("passez " + eventData)
         manager_search_previous(self)
 
-    elif EVENT_CALL_THE_PERSON in eventData:
+    elif EVENT_CALL_THE_PERSON or EVENT_VALIDE_PICTURE or EVENT_INVALIDE_PICTURE in eventData:
         logging.debug("passez " + eventData)
-        manager_search_call(self)
-        
+        manager_search_call(self, eventData)
+         
     else:
         logging.error("Enter else : manger_search_habitant :" + eventData)
