@@ -55,19 +55,22 @@ def download(storage, filename:str, online_filename:str,user = None, *path):
 def remove(storage, online_filename:str, *path):
     """
     remove a file from firebase storage
-    not working
-
     Args:
         storage (pyrebase.storage): pyrebase storage object type, enable to interact with the pyrebase storage
         online_filename (str): name of the file in the storage
         *path(list[str]): path of the file in the storage
     """
     try:
-        current_position = storage
+        path_tu_delet = ""
         for position in path:
-            current_position = current_position.child(position)
-        current_position.delete(online_filename)
+            path_tu_delet+=position
+            path_tu_delet+='/'
+        path_tu_delet+=online_filename
+        bucket = storage.bucket
+        blob=bucket.blob(path_tu_delet)
+        blob.delete()
     except Exception as e:
         print("unknown issue, verify your internet connexion"+ str(e))
         return "unknown issue, verify your internet connexion"+ str(e)
+
 

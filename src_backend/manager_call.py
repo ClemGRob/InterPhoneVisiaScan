@@ -89,7 +89,6 @@ def take_picture(self,firebase):
     user=serveraction.login(auth, "password@password.password","password")
     logging.debug("Upload")
     serveraction.upload(self.storage,self.Habitant[self.Selected_Hab]+".png",self.Habitant[self.Selected_Hab]+".png",user, "call",self.Habitant[self.Selected_Hab])
-    print("end fct")
 
 
 def delete_picture(self):
@@ -99,7 +98,6 @@ def delete_picture(self):
     try:
         if os.path.exists(file_to_delete):
             os.remove(file_to_delete)
-            print("file delet")
         else:
             msg =  f'Picture not found : {file_to_delete}'
             logging.debug(msg)
@@ -137,9 +135,7 @@ def replacement(self):
 def sequency_call(self, eventData_search):
     # logging.error(eventData_search)
     s_token, s_firebase = init_call(self)
-    print(eventData_search)
     if EVENT_CALL_THE_PERSON in eventData_search:
-        print("EVENT_CALL_THE_PERSON")
         logging.info("IN EVENT_CALL_THE_PERSON")
         verif_habitant(self, s_token)
         envoi_msg(self, s_token)
@@ -149,7 +145,6 @@ def sequency_call(self, eventData_search):
         self.transmit_textonQML(text_to_send, label_name)
 
     elif EVENT_VALIDE_PICTURE in eventData_search:
-        print("EVENT_VALIDE_PICTURE")
         logging.info("IN EVENT_VALIDE_PICTURE")
         take_picture(self, s_firebase)
         delete_picture(self)
@@ -158,10 +153,9 @@ def sequency_call(self, eventData_search):
         label_name = "pyLbQuestion"
         text_to_send = "MAquestionRESET"
         self.transmit_textonQML(text_to_send, label_name)
-        # replacement(self)
+        replacement(self)
 
     elif EVENT_INVALIDE_PICTURE in eventData_search:
-        print("EVENT_INVALIDE_PICTURE")
         logging.info("IN EVENT_INVALIDE_PICTURE")
         label_name = "pyLbQuestion"
         text_to_send = "MAquestionRESET"
@@ -174,7 +168,6 @@ def sequency_call(self, eventData_search):
         text_to_send = "MAquestionRESET"
         logging.debug(f"Transmition de la question : {text_to_send, label_name}")
         self.transmit_textonQML(text_to_send, label_name)
-    print("exit sequency call")
 
 
 def set_manager_search_call(self, eventData_search):
