@@ -10,7 +10,6 @@ import os
 import pyrebase
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-# from src.wrapper import *
 import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
 from my_tool import get_linux_distribution

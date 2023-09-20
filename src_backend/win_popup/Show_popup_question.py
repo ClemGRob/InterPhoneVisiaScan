@@ -3,9 +3,19 @@ from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QPushBut
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTransform
 
+import pyrebase
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
+from facereco import FaceRecognitionWithIndication
+import pyrebase_val.config as config
+import pyrebase_val.src as serveraction
+
+
+
 class CustomPopup(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        
         self.setWindowTitle('Popup personnalisé')
         self.setGeometry(100, 100, 500, 300)
 

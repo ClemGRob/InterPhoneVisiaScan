@@ -23,7 +23,7 @@ storage = firebase.storage()
 auth=firebase.auth()
 face_recognition = FaceRecognitionWithIndication.FaceRecognition(storage, auth, db)
 try:
-    DICT_HABITANT = serveraction.get_data(db, "token")#["noms"]
+    DICT_HABITANT = serveraction.get_data(db, "token")
 except KeyError:
     logging.error("The 'noms' key was not found in the data.")
 

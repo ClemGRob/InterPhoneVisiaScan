@@ -13,13 +13,15 @@ from src_backend.constants_ui import *
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
+from my_tool import get_linux_distribution
+
 import time
 
 from src_backend.ui_set_win_popup import Open_Win_popup_msg, Open_Win_popup_question
 
 label_name = "pyLbSerach_Hab"
 
-
+distr = get_linux_distribution()
 
 def pi_web_cam_photo(name:str):
     import subprocess
@@ -83,7 +85,10 @@ def take_picture(self):
     # TODO
     print("deb take_photo")
     logging.info("Take capture")
-    web_cam_photo(self.Habitant[self.Selected_Hab])
+    if distr=="ubuntu":
+        web_cam_photo(self.Habitant[self.Selected_Hab])
+    else :
+        pi_web_cam_photo(self.Habitant[self.Selected_Hab])
     print("deb take_photo")
     img = "img.txt"
     logging.debug("Authentification")

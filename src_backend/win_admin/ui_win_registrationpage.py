@@ -9,9 +9,14 @@ import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
 from facereco import FaceRecognitionWithIndication
 
+firebase = pyrebase.initialize_app(config.pirebaseConfig)
+db = firebase.database()
+storage = firebase.storage()
+auth=firebase.auth()
+face_recognition = FaceRecognitionWithIndication.FaceRecognition(storage, auth, db)
 
 class RegistrationPage(QWidget):
-    def __init__(self, name_display_widget, db, face_recognition,storage,auth):
+    def __init__(self,name_display_widget):
         """
         Initialize the RegistrationPage widget.
 

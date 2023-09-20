@@ -1,9 +1,9 @@
-#import json
-#sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-#from facereco import FaceRecognitionWithIndication
-#from Open_Win_Admin import *
+# import json
+# sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+# from facereco import FaceRecognitionWithIndication
+# from Open_Win_Admin import *
 
-#face_recognition = FaceRecognitionWithIndication.FaceRecognition()
+# face_recognition = FaceRecognitionWithIndication.FaceRecognition()
 
 
 import logging

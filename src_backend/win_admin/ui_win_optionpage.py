@@ -4,7 +4,7 @@ from ui_win_registrationpage import RegistrationPage
 from ui_win_deletionpage import DeletionPage
 
 class OptionsPage(QWidget):
-    def __init__(self, name_display_widget,db, face_recognition,storage,auth):
+    def __init__(self, name_display_widget):
         """
         Initialize the OptionsPage widget.
 
@@ -14,10 +14,6 @@ class OptionsPage(QWidget):
         super().__init__()
         logging.info("O - Init_UI")
         self.name_display_widget = name_display_widget
-        self.db = db
-        self.face_recognition = face_recognition
-        self.auth = auth
-        self.storage = storage
         self.initUI()
         logging.info("O - End Init")
 
@@ -46,7 +42,7 @@ class OptionsPage(QWidget):
         Open the RegistrationPage and close the OptionsPage.
         """
         logging.info("O - Open RegistrationPage")
-        self.registration_page = RegistrationPage(self.name_display_widget, self.db, self.face_recognition,self.storage,self.auth)
+        self.registration_page = RegistrationPage(self.name_display_widget)
         self.registration_page.setWindowTitle("Registration Page")
         self.registration_page.show()
         logging.info("O - Close RegistrationPage")
