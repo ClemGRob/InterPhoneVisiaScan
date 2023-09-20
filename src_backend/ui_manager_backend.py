@@ -11,7 +11,7 @@ from PyQt5.QtQml import *
 
 from src_backend.set_error import call_exception
 from src_backend.ui_set_data_event import manager_data
-
+import facereco
 
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
@@ -24,7 +24,9 @@ class Backend(QObject):
         self.Selected_Hab = 0
         self.db=db_backend
         self.storage = storage
-
+        print("a")
+        self.face_recognition = facereco.FaceRecognition()
+        print("a")
         logging.debug(f"Liste reçu depuis Firebase : {Habitant}")  
         logging.debug(db_backend)
 
