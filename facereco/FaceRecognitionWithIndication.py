@@ -17,6 +17,7 @@ current_pos = str(os.path.dirname(os.path.abspath(__file__)))
 distr = get_linux_distribution()
 devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
 touchscreen_device = None
+
 for device in devices:
     if "event" in device.fn:
         touchscreen_device = device
@@ -119,7 +120,7 @@ class FaceRecognition:
                         cv2.imwrite(img_name, gray[y:y + h, x:x + w])
                         print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
                         self.images_per_person_dict[name_client] += 1
-                        time.sleep(1)
+                        break
 
 
             cv2.imshow('Capture', frame)
