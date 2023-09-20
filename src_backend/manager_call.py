@@ -79,21 +79,16 @@ def envoi_msg(self, token):
 
 
 
-def take_picture(self,firebase):
+def take_picture(self):
     # TODO
     print("deb take_photo")
     logging.info("Take capture")
-    # ####################################
-    # # Take picture
-    # ####################################
-    print("deb take_photo")
     web_cam_photo(self.Habitant[self.Selected_Hab])
     print("deb take_photo")
     img = "img.txt"
     logging.debug("Authentification")
-    auth=firebase.auth()
     logging.debug("Login")
-    user=serveraction.login(auth, "password@password.password","password")
+    user=serveraction.login(self.auth, "password@password.password","password")
     logging.debug("Upload")
     serveraction.upload(self.storage,self.Habitant[self.Selected_Hab]+".png",self.Habitant[self.Selected_Hab]+".png",user, "call",self.Habitant[self.Selected_Hab])
 
@@ -156,15 +151,14 @@ def sequency_call(self, eventData_search):
         logging.info("IN EVENT_VALIDE_PICTURE")
         print("IN EVENT_VALIDE_PICTURE")
         take_picture(self)
-        print("deb1")
         delete_picture(self)
-        print("deb2")
         envoi_msg(self, s_token)
         verif_access_door(self)
+        # replacement(self)
         label_name = "pyLbQuestion"
         text_to_send = "MAquestionRESET"
         self.transmit_textonQML(text_to_send, label_name)
-        replacement(self)
+        
 
     elif EVENT_INVALIDE_PICTURE in eventData_search:
         logging.info("IN EVENT_INVALIDE_PICTURE")
