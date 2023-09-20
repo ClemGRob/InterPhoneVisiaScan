@@ -1,4 +1,4 @@
-#import cv2
+import cv2
 import logging
 
 from pyfcm import FCMNotification
@@ -44,10 +44,12 @@ def init_popup(self):
 
 
 def init_call(self):
+    print("in init call")
     logging.info("Lancement du programme d'appel")
-    firebase = pyrebase.initialize_app(config.pirebaseConfig)
     
+    firebase = pyrebase.initialize_app(config.pirebaseConfig)
     token = serveraction.get_data(self.db,"token")
+    print(token)
     return token, firebase
 
 
@@ -62,6 +64,7 @@ def verif_habitant(self,token):
 
 
 def envoi_msg(self, token):
+    print("envoie msg")
     logging.debug(self.Habitant[self.Selected_Hab])
     DEVICE_TOKEN = token[self.Habitant[self.Selected_Hab]]
 
@@ -71,7 +74,8 @@ def envoi_msg(self, token):
     }
     
     logging.debug(data_message)
-    serveraction.send_message(config.API_KEY, DEVICE_TOKEN,message_title,message_body,data_message)
+    print(DEVICE_TOKEN)
+    print(serveraction.send_message(config.API_KEY, DEVICE_TOKEN,message_title,message_body,data_message))
 
 
 
@@ -81,7 +85,9 @@ def take_picture(self,firebase):
     # ####################################
     # # Take picture
     # ####################################
+    print("deb take_photo")
     web_cam_photo(self.Habitant[self.Selected_Hab])
+    print("deb take_photo")
     img = "img.txt"
     logging.debug("Authentification")
     auth=firebase.auth()
@@ -135,10 +141,15 @@ def replacement(self):
 def sequency_call(self, eventData_search):
     # logging.error(eventData_search)
     s_token, s_firebase = init_call(self)
+    print(EVENT_CALL_THE_PERSON)
+    print("s_token created")
+    print(self.Habitant)
+    print(self.Selected_Hab)
+    print(self.Habitant[self.Selected_Hab])
     if EVENT_CALL_THE_PERSON in eventData_search:
         logging.info("IN EVENT_CALL_THE_PERSON")
-        verif_habitant(self, s_token)
-        envoi_msg(self, s_token)
+        print("EVENT_CALL_THE_PERSON")
+        
         label_name = "pyLbQuestion"
         text_to_send = "MAquestion"
         logging.debug(f"Transmition de la question : {text_to_send, label_name}")
@@ -146,8 +157,11 @@ def sequency_call(self, eventData_search):
 
     elif EVENT_VALIDE_PICTURE in eventData_search:
         logging.info("IN EVENT_VALIDE_PICTURE")
+        print("IN EVENT_VALIDE_PICTURE")
         take_picture(self, s_firebase)
+        print("deb1")
         delete_picture(self)
+        print("deb2")
         envoi_msg(self, s_token)
         verif_access_door(self)
         label_name = "pyLbQuestion"
@@ -157,6 +171,9 @@ def sequency_call(self, eventData_search):
 
     elif EVENT_INVALIDE_PICTURE in eventData_search:
         logging.info("IN EVENT_INVALIDE_PICTURE")
+        print("EVENT_INVALIDE_PICTURE")
+        verif_habitant(self, s_token)
+        envoi_msg(self, s_token)
         label_name = "pyLbQuestion"
         text_to_send = "MAquestionRESET"
         logging.debug(f"Transmition de la question : {text_to_send, label_name}")
