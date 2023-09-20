@@ -1,3 +1,11 @@
+import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src_test.set_composant_physique import *
+#from src_test.set_win_test import OptionsPage
+#from src_test.set_run_test import TestUnitaire 
+
 class TestUnitaire:
     """
     Classe représentant l'ensemble des tests unitaires.
@@ -14,22 +22,12 @@ class TestUnitaire:
 
         :return: True si le test réussit, sinon False.
         """
-        # Logique pour exécuter le test Matériels physique
-        from set_composant_physique import (
-            test_espace_stockage,
-            test_indication_heure,
-            test_presence_camera,
-            test_enregistrement_image,
-            test_presence_ecran,
-            test_fonctionnement_tactile,
-        )
-
-        espace_stockage_result = test_espace_stockage()
-        indication_heure_result = test_indication_heure()
-        presence_camera_result = test_presence_camera()
-        enregistrement_image_result = test_enregistrement_image()
-        presence_ecran_result = test_presence_ecran()
-        fonctionnement_tactile_result = test_fonctionnement_tactile()
+        espace_stockage_result = self.test_espace_stockage()
+        indication_heure_result = self.test_indication_heure()
+        presence_camera_result = self.test_presence_camera()
+        enregistrement_image_result = self.test_enregistrement_image()
+        presence_ecran_result = self.test_presence_ecran()
+        fonctionnement_tactile_result = self.test_fonctionnement_tactile()
 
         # Vérifiez le résultat de chaque test
         if (
@@ -40,9 +38,21 @@ class TestUnitaire:
             and presence_ecran_result
             and fonctionnement_tactile_result
         ):
-            return True
+            # Les tests ont réussi
+            self.result_text.setText("Tous les tests des Matériels physiques ont réussi.")
         else:
-            return False
+            # Au moins un test a échoué
+            self.result_text.setText("Certains tests des Matériels physiques ont échoué.")
+
+        # Retournez True si tous les tests ont réussi, sinon False
+        return (
+            espace_stockage_result
+            and indication_heure_result
+            and presence_camera_result
+            and enregistrement_image_result
+            and presence_ecran_result
+            and fonctionnement_tactile_result
+        )
 
     def run_soft_frontend_test(self):
         """
@@ -86,15 +96,18 @@ class TestUnitaire:
 
         :return: True si tous les tests passent, sinon False.
         """
-        composant_physique_result = self.run_composant_physique_test()
-        soft_frontend_result = self.run_soft_frontend_test()
-        soft_backend_result = self.run_soft_backend_test()
-        soft_entier_result = self.run_soft_entier_test()
-        tests_unitaires_result = self.run_tests_unitaires()
+        results = {
+                "composant_physique": self.run_composant_physique_test(),
+                "soft_frontend": self.run_soft_frontend_test(),
+                "soft_backend": self.run_soft_backend_test(),
+                "soft_entier": self.run_soft_entier_test(),
+                "tests_unitaires": self.run_tests_unitaires()
+            }
 
-        # Vérifiez le résultat de chaque test
-        if (composant_physique_result and soft_frontend_result and soft_backend_result
-                and soft_entier_result and tests_unitaires_result):
-            return True
-        else:
-            return False
+        # Vérifiez le résultat de chaque test et collectez les noms des tests échoués
+        failed_tests = [test_name for test_name, result in results.items() if not result]
+
+        # Retournez un dictionnaire contenant les résultats des tests et les noms des tests échoués
+        return {"results": results, "failed_tests": failed_tests}
+
+        

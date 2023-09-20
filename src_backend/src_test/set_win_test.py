@@ -54,8 +54,9 @@ class OptionsPage(QWidget):
         """
         Exécute les tests unitaires et affiche les résultats dans la zone de texte.
         """
-        result = self.test_runner.run_all_tests()
-        if result:
-            self.result_text.setText("Tous les tests unitaires ont réussi.")
+        test_results = self.test_runner.run_all_tests()
+        if not test_results["failed_tests"]:
+            self.result_text.setText("Tous les tests ont réussi.")
         else:
-            self.result_text.setText("Certains tests unitaires ont échoué.")
+            failed_tests = ", ".join(test_results["failed_tests"])
+            self.result_text.setText(f"Certains tests unitaires ont échoué.\n {failed_tests}")
