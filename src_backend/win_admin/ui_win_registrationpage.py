@@ -81,11 +81,11 @@ class RegistrationPage(QWidget):
         self.face_recognition.register_faces(name, last_name, apartment_number, is_house_admin)
         
         logging.debug((name, last_name, apartment_number, is_house_admin))
-        self.serveraction.set_data(self.db,{"nom":last_name,"numero":apartment_number },"users","last_name")
+        serveraction.set_data(self.db,{"numero":apartment_number },"users","nom",last_name)
         QMessageBox.information(self, "Registration Success", "Person successfully registered.")
         logging.info("R - Close Saisie RegistrationPage")
         self.close()
-        self.name_display_widget.update_name_list()
+        # self.name_display_widget.update_name_list()
         logging.info("R - Fin de l'update de la liste")
 
     def center(self):

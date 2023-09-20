@@ -4,7 +4,7 @@ from ui_win_optionpage import OptionsPage
 from ui_win_virtual_keyboard import VirtualKeyboard
 
 class AdminPage(QWidget):
-    def __init__(self, name_display_widget,db, face_recognition,storage,auth):
+    def __init__(self, name_display_widget):
         """
         Initialize the AdminPage widget.
 
@@ -14,10 +14,6 @@ class AdminPage(QWidget):
         super().__init__()
         logging.info("A - Init_UI")
         self.name_display_widget = name_display_widget
-        self.db = db
-        self.face_recognition = face_recognition
-        self.auth = auth
-        self.storage = storage
         self.initUI()
         logging.info("A - End Init")
 
@@ -108,7 +104,7 @@ class AdminPage(QWidget):
         Open the OptionsPage and close the AdminPage.
         """
         logging.info("A - Open OptionPage")
-        self.options_page = OptionsPage(self.name_display_widget,self.db, self.face_recognition,self.storage,self.auth)
+        self.options_page = OptionsPage(self.name_display_widget)
         self.options_page.setWindowTitle("Options Page")
         self.options_page.show()
         logging.info("A - Close OptionPage")
