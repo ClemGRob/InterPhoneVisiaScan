@@ -1,15 +1,27 @@
 import logging
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLineEdit, QDesktopWidget, QPushButton, QMessageBox, QCheckBox)
 from ui_win_virtual_keyboard import VirtualKeyboard
+import pyrebase
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+
+import pyrebase_val.config as config
+import pyrebase_val.src as serveraction
+from facereco import FaceRecognitionWithIndication
+
 
 class RegistrationPage(QWidget):
-    def __init__(self, name_display_widget):
+    def __init__(self, name_display_widget, db, face_recognition,storage,auth):
         """
         Initialize the RegistrationPage widget.
 
         Args:
             name_display_widget: A QWidget for displaying names.
         """
+        self.db = db
+        self.face_recognition = face_recognition
+        self.auth = auth
+        self.storage = storage
         super().__init__()
         logging.info("R - Init_UI")
         self.name_display_widget = name_display_widget
@@ -60,9 +72,11 @@ class RegistrationPage(QWidget):
         name = self.name_input.text()
         last_name = self.last_name_input.text()
         apartment_number = self.apartment_number_input.text()
-        is_house_admin = self.house_admin_checkbox.isChecked()  # Check if the checkbox is checked
-   #     self.face_recognition.register_faces(name, last_name, apartment_number, is_house_admin)
+        is_house_admin = self.house_admin_checkbox.isChecked()  
+        self.face_recognition.register_faces(name, last_name, apartment_number, is_house_admin)
+        
         logging.debug((name, last_name, apartment_number, is_house_admin))
+        self.serveraction.set_data(self.db,{"nom":last_name,"numero":apartment_number },"users","last_name")
         QMessageBox.information(self, "Registration Success", "Person successfully registered.")
         logging.info("R - Close Saisie RegistrationPage")
         self.close()

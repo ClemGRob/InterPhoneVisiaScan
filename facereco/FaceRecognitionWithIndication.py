@@ -15,7 +15,7 @@ import pyrebase_val.src as serveraction
 
 current_pos = str(os.path.dirname(os.path.abspath(__file__)))
 class FaceRecognition:
-    def __init__(self):
+    def __init__(self,storage,auth,db):
         print(current_pos)
         self.name = ""
         self.last_name = ""
@@ -25,12 +25,12 @@ class FaceRecognition:
         self.face_cascade = cv2.CascadeClassifier(current_pos+'/haarcascade_frontalface_default.xml')
         self.images_per_person = 5
         
-        self.firebase = pyrebase.initialize_app(config.pirebaseConfig)
-        self.storage = self.firebase.storage()
-        self.auth = self.firebase.auth()
+        self.storage = storage
+        self.auth = auth
+        self.db = db
         self.user = serveraction.login(self.auth, "password@password.password", "password")
         try:
-            file = current_pos+'/../images_per_person_dict.json'  # Change the filename to use JSON
+            file = current_pos+'/images_per_person_dict.json'  # Change the filename to use JSON
             online_file = 'images_per_person_dict.json'
             serveraction.download(self.storage, file, online_file, self.user)
             with open('images_per_person_dict.json', 'r') as file:  # Change file format to read JSON
@@ -88,7 +88,6 @@ class FaceRecognition:
 
                 key = cv2.waitKey(1)
                 if key == ord(' '):
-# 
                     img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
 
                     # self.images_per_person_dict[name_client] +=1
@@ -116,7 +115,10 @@ class FaceRecognition:
         self.apartment_number = apartment_number
 
         full_name = f"{name}_{last_name}_{apartment_number}"
-
+        try: 
+            os.makedirs(current_pos+"/dataset/"+full_name)
+        except Exception as e:
+            pass
         if full_name not in self.images_per_person_dict:
             person_id = len(self.images_per_person_dict) + 1
             self.images_per_person_dict[full_name] = person_id
@@ -137,6 +139,7 @@ class FaceRecognition:
                 online_file = file
                 serveraction.upload(self.storage, file, online_file, self.user)
         self.capture_photos(full_name)
+        
 
         for i in range(self.images_per_person):
             img_path = os.path.join(current_pos,'dataset', full_name, f"{full_name}{i + 1}.jpg")
@@ -199,16 +202,19 @@ class FaceRecognition:
             shutil.rmtree('images_per_person_dict.json')
         # Remove the recognition model if necessary
         if len(self.training_data) < 2:
-            remove(self.storage,"face_recognition_model.yml",self.user)
+            serveraction.remove(self.storage,"face_recognition_model.yml")
             if os.path.exists("face_recognition_model.yml"):
                 shutil.rmtree("face_recognition_model.yml")
         return True
 
     def recognize_faces(self):
+        print("recognize feca")
         cap = cv2.VideoCapture(0)
         predictor = dlib.shape_predictor(current_pos+'/shape_predictor_68_face_landmarks.dat')
         serveraction.download(self.storage,"face_recognition_model.yml","face_recognition_model.yml",self.user)
+        print("download")
         self.recognizer.read(current_pos+'/face_recognition_model.yml')
+        print("read")
 
         cv2.namedWindow("Face Detection", cv2.WINDOW_NORMAL)
         cv2.setWindowProperty("Face Detection", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -278,8 +284,12 @@ class FaceRecognition:
 
 
 if __name__ == "__main__":
-    face_recognition = FaceRecognition()
-    action = "recognize"#input("Enter 'register' to register faces or 'recognize' for recognition: ")
+    firebase = pyrebase.initialize_app(config.pirebaseConfig)
+    db = firebase.database()
+    storage = firebase.storage()
+    auth=firebase.auth()
+    face_recognition = FaceRecognition(storage, auth, db)
+    action = "register"#input("Enter 'register' to register faces or 'recognize' for recognition: ")
 
     if action == "register":
         name = input("Enter the name: ")

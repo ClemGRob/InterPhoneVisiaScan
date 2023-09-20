@@ -16,7 +16,7 @@ import facereco
 class Backend(QObject):
     """Classe Backend pour gérer les interactions entre QML et Python."""
 
-    def __init__(self,view,db_backend, storage, Habitant):
+    def __init__(self,view,db_backend, storage,auth, face_recognition,Habitant):
         super().__init__()
         self.view = view
         self.stored_values = []
@@ -24,13 +24,10 @@ class Backend(QObject):
         self.Selected_Hab = 0
         self.db=db_backend
         self.storage = storage
-        print("a")
-        self.face_recognition = facereco.FaceRecognition()
-        print("a")
+        self.auth = auth
+        self.face_recognition = face_recognition
         logging.debug(f"Liste reçu depuis Firebase : {Habitant}")  
         logging.debug(db_backend)
-
-    # Signal pour indiquer qu'un événement s'est produit
     eventOccurred = pyqtSignal(str)
     
     @pyqtSlot(str)
@@ -47,9 +44,7 @@ class Backend(QObject):
             manager_data(self, eventData)
             
         except Exception as e:
-            # Handle the exception here, you can log it or take other actions as needed
             call_exception(e)
-            # You can also emit a signal to notify QML of the exception if necessary
             self.eventOccurred.emit(f"An exception occurred: {str(e)}")
         
     @pyqtSlot(str, result=str)

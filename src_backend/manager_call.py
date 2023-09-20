@@ -47,10 +47,10 @@ def init_call(self):
     print("in init call")
     logging.info("Lancement du programme d'appel")
     
-    firebase = pyrebase.initialize_app(config.pirebaseConfig)
+    # firebase = pyrebase.initialize_app(config.pirebaseConfig)
     token = serveraction.get_data(self.db,"token")
     print(token)
-    return token, firebase
+    return token
 
 
 
@@ -81,6 +81,7 @@ def envoi_msg(self, token):
 
 def take_picture(self,firebase):
     # TODO
+    print("deb take_photo")
     logging.info("Take capture")
     # ####################################
     # # Take picture
@@ -140,12 +141,8 @@ def replacement(self):
 
 def sequency_call(self, eventData_search):
     # logging.error(eventData_search)
-    s_token, s_firebase = init_call(self)
+    s_token = init_call(self)
     print(EVENT_CALL_THE_PERSON)
-    print("s_token created")
-    print(self.Habitant)
-    print(self.Selected_Hab)
-    print(self.Habitant[self.Selected_Hab])
     if EVENT_CALL_THE_PERSON in eventData_search:
         logging.info("IN EVENT_CALL_THE_PERSON")
         print("EVENT_CALL_THE_PERSON")
@@ -158,7 +155,7 @@ def sequency_call(self, eventData_search):
     elif EVENT_VALIDE_PICTURE in eventData_search:
         logging.info("IN EVENT_VALIDE_PICTURE")
         print("IN EVENT_VALIDE_PICTURE")
-        take_picture(self, s_firebase)
+        take_picture(self)
         print("deb1")
         delete_picture(self)
         print("deb2")
