@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import evdev
 import dlib
 import json  # Import the json module
 import shutil
@@ -12,8 +13,16 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 # from src.wrapper import *
 import pyrebase_val.config as config
 import pyrebase_val.src as serveraction
-
+from my_tool import get_linux_distribution
 current_pos = str(os.path.dirname(os.path.abspath(__file__)))
+distr = get_linux_distribution()
+devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+touchscreen_device = None
+for device in devices:
+    if "event" in device.fn:
+        touchscreen_device = device
+        break
+
 class FaceRecognition:
     def __init__(self,storage,auth,db):
         print(current_pos)
@@ -86,18 +95,33 @@ class FaceRecognition:
                     cv2.putText(frame, "Right profile - Press space to capture", (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.7, (0, 0, 255), 2)
 
-                key = cv2.waitKey(1)
-                if key == ord(' '):
-                    img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+                if distr=="ubuntu":
+                    key = cv2.waitKey(1)
+                    if key == ord(' '):
+                    # for event in touchscreen.read_loop():
 
-                    # self.images_per_person_dict[name_client] +=1
-                    # img_name = "/home/clem/pyrebaseIAScan/"+str(name_client)+"/"+str(name_client)+str(self.images_per_person_dict[name_client] )+".jpg"
-                    # os.path.join('dataset', name_client,
-                    #                         f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
-                    print(img_name)
-                    cv2.imwrite(img_name, gray[y:y + h, x:x + w])
-                    print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
-                    self.images_per_person_dict[name_client] += 1
+                        img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+
+                        print(img_name)
+                        cv2.imwrite(img_name, gray[y:y + h, x:x + w])
+                        print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
+                        self.images_per_person_dict[name_client] += 1
+                else:
+                    touchscreen = evdev.InputDevice(touchscreen_device.fn)
+                    for event in touchscreen.read_loop():
+
+                        img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+
+                        # self.images_per_person_dict[name_client] +=1
+                        # img_name = "/home/clem/pyrebaseIAScan/"+str(name_client)+"/"+str(name_client)+str(self.images_per_person_dict[name_client] )+".jpg"
+                        # os.path.join('dataset', name_client,
+                        #                         f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+                        print(img_name)
+                        cv2.imwrite(img_name, gray[y:y + h, x:x + w])
+                        print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
+                        self.images_per_person_dict[name_client] += 1
+                        time.sleep(1)
+
 
             cv2.imshow('Capture', frame)
 
@@ -208,14 +232,13 @@ class FaceRecognition:
         return True
 
     def recognize_faces(self):
-        print("recognize feca")
         cap = cv2.VideoCapture(0)
         predictor = dlib.shape_predictor(current_pos+'/shape_predictor_68_face_landmarks.dat')
         serveraction.download(self.storage,"face_recognition_model.yml","face_recognition_model.yml",self.user)
         print("download")
         self.recognizer.read(current_pos+'/face_recognition_model.yml')
         print("read")
-
+        
         cv2.namedWindow("Face Detection", cv2.WINDOW_NORMAL)
         cv2.setWindowProperty("Face Detection", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         start_time = time.time()
