@@ -24,6 +24,8 @@ for device in devices:
         break
 
 class FaceRecognition:
+
+
     def __init__(self,storage,auth,db):
         print(current_pos)
         self.name = ""
@@ -95,32 +97,31 @@ class FaceRecognition:
                     cv2.putText(frame, "Right profile - Press space to capture", (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.7, (0, 0, 255), 2)
 
-                if distr=="ubuntu":
-                    key = cv2.waitKey(1)
-                    if key == ord(' '):
-                    # for event in touchscreen.read_loop():
+                # if distr=="ubuntu":
+                #     key = cv2.waitKey(1)
+                #     if key == ord(' '):
 
-                        img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+                img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
 
-                        print(img_name)
-                        cv2.imwrite(img_name, gray[y:y + h, x:x + w])
-                        print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
-                        self.images_per_person_dict[name_client] += 1
-                else:
-                    touchscreen = evdev.InputDevice(touchscreen_device.fn)
-                    for event in touchscreen.read_loop():
+                print(img_name)
+                cv2.imwrite(img_name, gray[y:y + h, x:x + w])
+                print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
+                self.images_per_person_dict[name_client] += 1
+                # else:
+                #     touchscreen = evdev.InputDevice(touchscreen_device.fn)
+                #     for event in touchscreen.read_loop():
 
-                        img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
-
-                        # self.images_per_person_dict[name_client] +=1
-                        # img_name = "/home/clem/pyrebaseIAScan/"+str(name_client)+"/"+str(name_client)+str(self.images_per_person_dict[name_client] )+".jpg"
-                        # os.path.join('dataset', name_client,
-                        #                         f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
-                        print(img_name)
-                        cv2.imwrite(img_name, gray[y:y + h, x:x + w])
-                        print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
-                        self.images_per_person_dict[name_client] += 1
-                        break
+                #         img_name = os.path.join(current_pos,'dataset', name_client,f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+            
+                #         # self.images_per_person_dict[name_client] +=1
+                #         # img_name = "/home/clem/pyrebaseIAScan/"+str(name_client)+"/"+str(name_client)+str(self.images_per_person_dict[name_client] )+".jpg"
+                #         # os.path.join('dataset', name_client,
+                #         #                         f"{name_client}{self.images_per_person_dict[name_client] + 1}.jpg")
+                #         print(img_name)
+                #         cv2.imwrite(img_name, gray[y:y + h, x:x + w])
+                #         print(f"Image {self.images_per_person_dict[name_client] + 1} of {name_client} saved.")
+                #         self.images_per_person_dict[name_client] += 1
+                #         time.sleep(1)
 
 
             cv2.imshow('Capture', frame)
@@ -256,7 +257,7 @@ class FaceRecognition:
 
                 cv2.imshow('Face Detection', frame)
 
-                if time.time() - start_time > 5:
+                if time.time() - start_time > 15:
                     delay_passed = True
             else:
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -305,6 +306,60 @@ class FaceRecognition:
                 shutil.rmtree("face_recognition_model.yml")
         return False
 
+    def web_cam_single_photo(self,name:str):
+        cap = cv2.VideoCapture(0)
+        id_photo=0
+        ret, frame = cap.read()
+        cv2.imwrite(name+str(id_photo)+".png", frame)
+        print(name+str(id_photo)+".png")
+        id_photo+=1
+        cap.release()
+        cv2.destroyAllWindows()
+        time.sleep(0.1)
+
+    def verify_photo(self, name:str):
+        print(name)
+        cap = cv2.VideoCapture(0)
+        predictor = dlib.shape_predictor(current_pos+'/shape_predictor_68_face_landmarks.dat')
+        serveraction.download(self.storage,"face_recognition_model.yml","face_recognition_model.yml",self.user)
+        self.recognizer.read(current_pos+'/face_recognition_model.yml')
+        img = cv2.imread(name,-1)
+        
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+        for (x, y, w, h) in faces:
+            roi_gray = gray[y:y + h, x:x + w]
+            landmarks = predictor(roi_gray, dlib.rectangle(0, 0, w, h))
+
+            left_eye = landmarks.part(36)
+            right_eye = landmarks.part(45)
+            eye_distance_x = right_eye.x - left_eye.x
+
+            if eye_distance_x > 10:
+                gray_face = roi_gray[y:y + h, x:x + w]
+                print(str(gray_face))
+                confidence = 110
+                if np.size(gray_face) > 0:
+                    
+                    label, confidence = self.recognizer.predict(gray_face)
+                    print(confidence)
+
+                if confidence < 100:
+                    print("Door Open")
+                    cap.release()
+                    cv2.destroyAllWindows()
+                    if os.path.exists("face_recognition_model.yml"):
+                        shutil.rmtree("face_recognition_model.yml")
+                    cv2.destroyAllWindows()
+                    return True
+                else:
+                    print("Unknown person")
+            else:
+                print("Security checks fail")
+        cv2.destroyAllWindows()
+        return False
+
 
 if __name__ == "__main__":
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
@@ -312,17 +367,22 @@ if __name__ == "__main__":
     storage = firebase.storage()
     auth=firebase.auth()
     face_recognition = FaceRecognition(storage, auth, db)
+    # face_recognition.capture_photos("aaa")
+    for _ in range(25):
+        face_recognition.web_cam_single_photo("a"+str(_))
+        print(face_recognition.verify_photo("a"+str(_)+"0.png"))
+        time.sleep(0.5)
     action = "register"#input("Enter 'register' to register faces or 'recognize' for recognition: ")
 
-    if action == "register":
-        name = input("Enter the name: ")
-        last_name = input("Enter the last name: ")
-        apartment_number = input("Enter the apartment number: ")
-        face_recognition.register_faces(name, last_name, apartment_number)
-    elif action == "recognize":
-        face_recognition.recognize_faces()
-    elif action == "delete":
-        name = input("Enter the name: ")
-        last_name = input("Enter the last name: ")
-        apartment_number = input("Enter the apartment number: ")
-        face_recognition.delete_person(name, last_name, apartment_number)
+    # if action == "register":
+    #     name = input("Enter the name: ")
+    #     last_name = input("Enter the last name: ")
+    #     apartment_number = input("Enter the apartment number: ")
+    #     face_recognition.register_faces(name, last_name, apartment_number)
+    # elif action == "recognize":
+    #     face_recognition.recognize_faces()
+    # elif action == "delete":
+    #     name = input("Enter the name: ")
+    #     last_name = input("Enter the last name: ")
+    #     apartment_number = input("Enter the apartment number: ")
+    #     face_recognition.delete_person(name, last_name, apartment_number)
