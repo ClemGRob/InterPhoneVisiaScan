@@ -236,9 +236,7 @@ class FaceRecognition:
         cap = cv2.VideoCapture(0)
         predictor = dlib.shape_predictor(current_pos+'/shape_predictor_68_face_landmarks.dat')
         serveraction.download(self.storage,"face_recognition_model.yml","face_recognition_model.yml",self.user)
-        print("download")
         self.recognizer.read(current_pos+'/face_recognition_model.yml')
-        print("read")
         
         cv2.namedWindow("Face Detection", cv2.WINDOW_NORMAL)
         cv2.setWindowProperty("Face Detection", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -255,7 +253,7 @@ class FaceRecognition:
                 for (x, y, w, h) in faces:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-                cv2.imshow('Face Detection', frame)
+                # cv2.imshow('Face Detection', frame)
 
                 if time.time() - start_time > 15:
                     delay_passed = True
@@ -291,7 +289,7 @@ class FaceRecognition:
                             print("Unknown person")
                     else:
                         print("Security checks fail")
-                cv2.imshow('Face Detection', frame)
+                # cv2.imshow('Face Detection', frame)
 
             if time.time() - start_time > 10:
                 print("Timeout: No face recognized in 10 seconds.")
@@ -308,11 +306,9 @@ class FaceRecognition:
 
     def web_cam_single_photo(self,name:str):
         cap = cv2.VideoCapture(0)
-        id_photo=0
         ret, frame = cap.read()
-        cv2.imwrite(name+str(id_photo)+".png", frame)
-        print(name+str(id_photo)+".png")
-        id_photo+=1
+        cv2.imwrite(name+".png", frame)
+        print(name+".png")
         cap.release()
         cv2.destroyAllWindows()
         time.sleep(0.1)
@@ -359,7 +355,14 @@ class FaceRecognition:
                 print("Security checks fail")
         cv2.destroyAllWindows()
         return False
-
+    
+    def recognize_faces_new(self, name, cpt):
+        for _ in range(cpt):
+            self.web_cam_single_photo(current_pos+"/"+name)
+            if self.verify_photo(current_pos+"/"+name+".png") is True:
+                return True
+            time.sleep(0.5)
+        return False
 
 if __name__ == "__main__":
     firebase = pyrebase.initialize_app(config.pirebaseConfig)
@@ -368,11 +371,15 @@ if __name__ == "__main__":
     auth=firebase.auth()
     face_recognition = FaceRecognition(storage, auth, db)
     # face_recognition.capture_photos("aaa")
-    for _ in range(25):
-        face_recognition.web_cam_single_photo("a"+str(_))
-        print(face_recognition.verify_photo("a"+str(_)+"0.png"))
-        time.sleep(0.5)
-    action = "register"#input("Enter 'register' to register faces or 'recognize' for recognition: ")
+    # cpt = 0
+    face_recognition.recognize_faces_new("ok",10)
+    # for _ in range(10):
+    #     face_recognition.web_cam_single_photo("a"+str(_))
+    #     if face_recognition.verify_photo("a"+str(_)+"0.png") is True:
+    #         cpt +=1
+    #     time.sleep(0.5)
+    # print(cpt)
+    # action = "recognize"#input("Enter 'register' to register faces or 'recognize' for recognition: ")
 
     # if action == "register":
     #     name = input("Enter the name: ")

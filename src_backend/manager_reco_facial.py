@@ -20,7 +20,7 @@ def set_manager_reco_facial(self, eventData):
     if eventData == "Reconnaissance_IA":
         logging.debug("personne reconnue")
         print(("in the function"))
-        print(self.face_recognition.recognize_faces())
+        print(self.face_recognition.recognize_faces_new("poto", 20))
         set_ui_msg_open_door(self,label_name)
 
     else:
