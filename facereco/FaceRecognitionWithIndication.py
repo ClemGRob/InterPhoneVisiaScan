@@ -124,7 +124,7 @@ class FaceRecognition:
                 #         time.sleep(1)
 
 
-            cv2.imshow('Capture', frame)
+            # cv2.imshow('Capture', frame)
 
             key = cv2.waitKey(1)
 
