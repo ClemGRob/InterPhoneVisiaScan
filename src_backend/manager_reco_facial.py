@@ -12,16 +12,19 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 import facereco
 label_name = "reconnaissancefaciale"
+import time
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox, QPushButton
+
+
 
 def set_manager_reco_facial(self, eventData):
     logging.info(f"Lancement du programme de {eventData}")
-    print(("in the function"))
     print(eventData)
     if eventData == "Reconnaissance_IA":
         logging.debug("personne reconnue")
-        print(("in the function"))
-        print(self.face_recognition.recognize_faces_new("poto", 20))
-        set_ui_msg_open_door(self,label_name)
+        if self.face_recognition.recognize_faces_new("photo", 20) == True:       
+            set_ui_msg_open_door(self,label_name)
 
     else:
        print(("out the function"))
